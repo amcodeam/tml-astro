@@ -1,0 +1,1347 @@
+---
+import weekend1 from "../../weekend1.json";
+import weekend2 from "../../weekend2.json";
+
+const buildWeekend = (data, name) => {
+  const byDate = new Map();
+
+  data.performances.forEach((performance) => {
+    const dateKey = performance.date;
+    if (!byDate.has(dateKey)) {
+      byDate.set(dateKey, {
+        date: dateKey,
+        day: performance.day,
+        stages: new Map(),
+      });
+    }
+
+    const dateEntry = byDate.get(dateKey);
+    const stageName = performance.stage.name;
+    if (!dateEntry.stages.has(stageName)) {
+      dateEntry.stages.set(stageName, []);
+    }
+    dateEntry.stages.get(stageName).push(performance.name);
+  });
+
+  const days = [...byDate.values()]
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((entry) => ({
+      date: entry.date,
+      day: entry.day,
+      stages: [...entry.stages.entries()].map(([stageName, artists]) => ({
+        name: stageName,
+        artists,
+      })),
+    }));
+
+  return {
+    name,
+    days,
+  };
+};
+
+const weekends = [buildWeekend(weekend1, "W1"), buildWeekend(weekend2, "W2")];
+const defaultWeek = weekends[0];
+const defaultDay = defaultWeek.days[0];
+const formatDay = (festivalDay) =>
+  `${festivalDay.day.slice(0, 3)} ${festivalDay.date.slice(8)} JUL`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tomorrowland Line-Up Selector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://um.ameercode.com/script.js"
+      data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
+    ></script>
+  </head>
+  <body>
+    <div class="page-glow"></div>
+    <header class="site-header">
+      <div class="brand">TML 26</div>
+      <nav class="main-nav" aria-hidden="true"></nav>
+      <div class="header-actions">
+        <button class="pill ghost" data-share aria-label="Share schedule">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+            </svg>
+          </span>
+          <span class="share-text">Share</span>
+        </button>
+        <button class="pill ghost" id="open-schedule">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 20s-7-4.35-7-9.2C5 8.4 6.9 6.5 9.3 6.5c1.5 0 2.9.8 3.7 2.1.8-1.3 2.2-2.1 3.7-2.1 2.4 0 4.3 1.9 4.3 4.3C21 15.65 12 20 12 20z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+            </svg>
+          </span>
+          My Schedule
+          <span class="count-badge" id="schedule-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card">
+          <div class="hero-top">
+            <span class="hero-tag">Not made by tml</span>
+            <span class="hero-tag ghost" id="day-label">
+              {defaultDay.day} - {defaultDay.date}
+            </span>
+          </div>
+          <h1>Pick the DJs you want to see.</h1>
+          <p>
+            Build your personal timetable by selecting artists across every stage.
+            Your picks update live as you browse the line-up.
+          </p>
+          <div class="hero-actions">
+            <button class="pill active" data-view-button data-view="stages">
+              Stages
+            </button>
+            <button class="pill" data-view-button data-view="artists">
+              Artists
+            </button>
+          </div>
+          <div class="hero-actions secondary">
+            {weekends.map((festivalWeek) => (
+              <button
+                class={`pill ${festivalWeek.name === defaultWeek.name ? "active" : ""}`}
+                data-week-button
+                data-week={festivalWeek.name}
+              >
+                {festivalWeek.name === "W1" ? "Week 1" : "Week 2"}
+              </button>
+            ))}
+          </div>
+          <div class="hero-actions secondary" id="day-buttons">
+            {weekends.map((festivalWeek) =>
+              festivalWeek.days.map((festivalDay) => (
+                <button
+                  class={`pill ${festivalDay.date === defaultDay.date ? "active" : ""}`}
+                  data-day-button
+                  data-week={festivalWeek.name}
+                  data-day={festivalDay.date}
+                >
+                  {formatDay(festivalDay)}
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+
+      {weekends.map((festivalWeek) =>
+        festivalWeek.days.map((festivalDay) => {
+          const stages = festivalDay.stages;
+          const featuredStages = stages.slice(0, 4);
+          const remainingStages = stages.slice(4);
+          const artists = stages.flatMap((stage) =>
+            stage.artists.map((artist) => ({
+              artist,
+              stage: stage.name,
+            }))
+          );
+
+          return (
+            <>
+              <section
+                class={`content ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
+                data-view-section="stages"
+                data-week={festivalWeek.name}
+                data-day={festivalDay.date}
+              >
+                <div class="section-header">
+                  <div>
+                    <h2>{festivalDay.day} Stage Highlights</h2>
+                    <p>Click any artist to add them to your schedule.</p>
+                  </div>
+                  <div class="search">
+                    <input
+                      data-stage-search
+                      type="search"
+                      placeholder="Search artists or stages"
+                    />
+                  </div>
+                </div>
+
+                <div class="search-results hidden" data-search-results></div>
+
+                <div class="stage-content" data-stage-content>
+                  <div class="featured-grid">
+                    {featuredStages.map((stage) => (
+                      <article class="stage-card" data-stage={stage.name}>
+                        <header>{stage.name}</header>
+                        <div class="stage-body">
+                          {stage.artists.map((artist) => (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              {artist}
+                            </button>
+                          ))}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+
+                  <div class="lineup-grid">
+                    {remainingStages.map((stage) => (
+                      <article class="stage-card" data-stage={stage.name}>
+                        <header>{stage.name}</header>
+                        <div class="stage-body">
+                          {stage.artists.map((artist) => (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              {artist}
+                            </button>
+                          ))}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              <section
+                class={`content hidden ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
+                data-view-section="artists"
+                data-week={festivalWeek.name}
+                data-day={festivalDay.date}
+              >
+                <div class="section-header">
+                  <div>
+                    <h2>{festivalDay.day} Artists</h2>
+                    <p>Browse every artist across all stages.</p>
+                  </div>
+                  <div class="search">
+                    <input
+                      data-artist-search
+                      type="search"
+                      placeholder="Search artists or stages"
+                    />
+                  </div>
+                </div>
+
+                <div class="search-results hidden" data-search-results></div>
+
+                <div class="artist-content" data-artist-content>
+                  <div class="artist-list">
+                    {artists.map((item) => (
+                      <article
+                        class="artist-tile"
+                        data-artist={item.artist}
+                        data-stage={item.stage}
+                      >
+                        <div>
+                          <h4>{item.artist}</h4>
+                          <p>{item.stage}</p>
+                        </div>
+                        <button
+                          class="artist"
+                          type="button"
+                          data-artist={item.artist}
+                          data-stage={item.stage}
+                          data-week={festivalWeek.name}
+                          data-day={festivalDay.date}
+                          data-day-name={festivalDay.day}
+                          data-disabled={
+                            item.artist.toLowerCase() === "to be announced"
+                              ? "true"
+                              : undefined
+                          }
+                        >
+                          Select
+                        </button>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </>
+          );
+        })
+      )}
+
+      <aside class="selection"></aside>
+    </main>
+
+    <div class="schedule-panel" id="schedule-panel" aria-hidden="true">
+      <div class="schedule-backdrop" data-close-panel></div>
+      <div class="schedule-sheet">
+        <header>
+          <h3>My Schedule</h3>
+          <div class="schedule-actions">
+            <button class="pill ghost" data-share aria-label="Share schedule">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+              <span class="share-text">Share</span>
+            </button>
+            <button class="pill ghost" data-close-panel aria-label="Close">
+              ×
+            </button>
+          </div>
+        </header>
+        <div class="schedule-content" id="schedule-content">
+          <p class="empty">Select artists to build your schedule.</p>
+        </div>
+        <button class="pill primary" id="copy-schedule">Copy Schedule</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <p>Just for fun, will delete later - Amir 🔥</p>
+    </footer>
+
+    <script type="module">
+      const selected = new Map();
+      const stageSearchInputs = document.querySelectorAll("[data-stage-search]");
+      const artistSearchInputs = document.querySelectorAll("[data-artist-search]");
+      const viewButtons = document.querySelectorAll("[data-view-button]");
+      const viewSections = document.querySelectorAll("[data-view-section]");
+      const weekButtons = document.querySelectorAll("[data-week-button]");
+      const dayButtons = document.querySelectorAll("[data-day-button]");
+      const dayLabel = document.getElementById("day-label");
+      const copyButton = document.getElementById("copy-schedule");
+      const shareButtons = document.querySelectorAll("[data-share]");
+      const openScheduleButton = document.getElementById("open-schedule");
+      const schedulePanel = document.getElementById("schedule-panel");
+      const scheduleContent = document.getElementById("schedule-content");
+      const scheduleCount = document.getElementById("schedule-count");
+      let activeView = "stages";
+      let activeWeek = weekButtons[0]?.dataset.week;
+      let activeDay = dayButtons[0]?.dataset.day;
+
+      const updateSelected = () => {
+        scheduleCount.textContent = selected.size;
+        renderSchedulePanel();
+      };
+
+      const bindArtistButton = (button) => {
+        const isDisabled = button.dataset.disabled === "true";
+        if (isDisabled) {
+          button.classList.add("disabled");
+          button.setAttribute("disabled", "true");
+          return;
+        }
+        button.addEventListener("click", () => {
+          const entry = {
+            artist: button.dataset.artist,
+            stage: button.dataset.stage,
+            week: button.dataset.week,
+            day: button.dataset.day,
+            dayName: button.dataset.dayName,
+          };
+          const key = `${entry.week}|${entry.day}|${entry.artist}|${entry.stage}`;
+          const isSelected = selected.has(key);
+          if (isSelected) {
+            selected.delete(key);
+          } else {
+            selected.set(key, entry);
+          }
+          document
+            .querySelectorAll(
+              `.artist[data-artist="${entry.artist}"][data-stage="${entry.stage}"][data-week="${entry.week}"][data-day="${entry.day}"]`
+            )
+            .forEach((item) => {
+              item.classList.toggle("selected", !isSelected);
+            });
+          updateSelected();
+        });
+      };
+
+      const artistButtons = document.querySelectorAll(".artist");
+      artistButtons.forEach((button) => {
+        bindArtistButton(button);
+      });
+
+      const allEntries = new Map();
+      document.querySelectorAll(".artist").forEach((button) => {
+        if (button.dataset.disabled === "true") {
+          return;
+        }
+        const entry = {
+          artist: button.dataset.artist,
+          stage: button.dataset.stage,
+          week: button.dataset.week,
+          day: button.dataset.day,
+          dayName: button.dataset.dayName,
+        };
+        const key = `${entry.week}|${entry.day}|${entry.artist}|${entry.stage}`;
+        if (!allEntries.has(key)) {
+          allEntries.set(key, entry);
+        }
+      });
+
+      const renderSearchResults = (section, query) => {
+        const results = section.querySelector("[data-search-results]");
+        const stageContent = section.querySelector("[data-stage-content]");
+        const artistContent = section.querySelector("[data-artist-content]");
+
+        if (!results) {
+          return;
+        }
+
+        if (!query) {
+          results.classList.add("hidden");
+          results.innerHTML = "";
+          if (stageContent) {
+            stageContent.classList.remove("hidden");
+          }
+          if (artistContent) {
+            artistContent.classList.remove("hidden");
+          }
+          return;
+        }
+
+        const matches = [...allEntries.values()].filter((entry) =>
+          entry.artist.toLowerCase().includes(query)
+        );
+
+        results.innerHTML = "";
+        if (!matches.length) {
+          const empty = document.createElement("p");
+          empty.className = "empty";
+          empty.textContent = "No matching artists found.";
+          results.appendChild(empty);
+        } else {
+          matches
+            .sort((a, b) => a.artist.localeCompare(b.artist))
+            .forEach((entry) => {
+              const card = document.createElement("article");
+              card.className = "search-card";
+
+              const info = document.createElement("div");
+              const title = document.createElement("h4");
+              title.textContent = entry.artist;
+              info.appendChild(title);
+
+              const stage = document.createElement("p");
+              stage.className = "meta";
+              stage.textContent = entry.stage;
+              info.appendChild(stage);
+
+              const details = document.createElement("p");
+              details.className = "meta";
+              const weekLabel = entry.week === "W1" ? "Week 1" : "Week 2";
+              const dayLabel = entry.dayName ? entry.dayName : "";
+              details.textContent = `${weekLabel} · ${dayLabel} · ${entry.day}`;
+              info.appendChild(details);
+
+              const button = document.createElement("button");
+              button.className = "artist";
+              button.type = "button";
+              button.dataset.artist = entry.artist;
+              button.dataset.stage = entry.stage;
+              button.dataset.week = entry.week;
+              button.dataset.day = entry.day;
+              button.dataset.dayName = entry.dayName;
+              button.textContent = "Select";
+
+              const key = `${entry.week}|${entry.day}|${entry.artist}|${entry.stage}`;
+              if (selected.has(key)) {
+                button.classList.add("selected");
+              }
+
+              bindArtistButton(button);
+              card.appendChild(info);
+              card.appendChild(button);
+              results.appendChild(card);
+            });
+        }
+
+        results.classList.remove("hidden");
+        if (stageContent) {
+          stageContent.classList.add("hidden");
+        }
+        if (artistContent) {
+          artistContent.classList.add("hidden");
+        }
+      };
+
+      const updateVisibleSections = () => {
+        viewSections.forEach((section) => {
+          const matchesView = section.dataset.viewSection === activeView;
+          const matchesWeek = section.dataset.week === activeWeek;
+          const matchesDay = section.dataset.day === activeDay;
+          section.classList.toggle(
+            "hidden",
+            !(matchesView && matchesWeek && matchesDay)
+          );
+        });
+      };
+
+      const updateDayButtons = () => {
+        let firstVisibleDay = null;
+        dayButtons.forEach((button) => {
+          const isVisible = button.dataset.week === activeWeek;
+          button.classList.toggle("hidden", !isVisible);
+          if (isVisible && !firstVisibleDay) {
+            firstVisibleDay = button;
+          }
+        });
+
+        if (firstVisibleDay && firstVisibleDay.dataset.day !== activeDay) {
+          setActiveDay(firstVisibleDay.dataset.day);
+        }
+      };
+
+      const setActiveDay = (dayValue) => {
+        activeDay = dayValue;
+        dayButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.day === dayValue);
+        });
+        const labelButton = document.querySelector(
+          `[data-day-button][data-day="${dayValue}"]`
+        );
+        if (labelButton) {
+          dayLabel.textContent = `${labelButton.textContent.replace(/\s+/g, " ")}`;
+        }
+        updateVisibleSections();
+      };
+
+      const setActiveWeek = (weekValue) => {
+        activeWeek = weekValue;
+        weekButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.week === weekValue);
+        });
+        updateDayButtons();
+        updateVisibleSections();
+      };
+
+      stageSearchInputs.forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const section = event.target.closest("[data-view-section]");
+          if (section) {
+            renderSearchResults(section, event.target.value.toLowerCase());
+          }
+        });
+      });
+
+      artistSearchInputs.forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const section = event.target.closest("[data-view-section]");
+          if (section) {
+            renderSearchResults(section, event.target.value.toLowerCase());
+          }
+        });
+      });
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetView = button.dataset.view;
+          activeView = targetView;
+
+          viewButtons.forEach((item) => {
+            item.classList.toggle("active", item === button);
+          });
+
+          updateVisibleSections();
+        });
+      });
+
+      weekButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setActiveWeek(button.dataset.week);
+        });
+      });
+
+      dayButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setActiveDay(button.dataset.day);
+        });
+      });
+
+      const buildShareText = () => {
+        if (!selected.size) {
+          return "";
+        }
+
+        const grouped = new Map();
+        const weekLabel = (week) => (week === "W1" ? "Week 1" : "Week 2");
+        const dayLabels = new Map();
+
+        selected.forEach((entry) => {
+          if (!grouped.has(entry.week)) {
+            grouped.set(entry.week, new Map());
+          }
+          const weekGroup = grouped.get(entry.week);
+          if (!weekGroup.has(entry.day)) {
+            weekGroup.set(entry.day, []);
+          }
+          weekGroup.get(entry.day).push(entry);
+          if (!dayLabels.has(entry.day) && entry.dayName) {
+            dayLabels.set(entry.day, entry.dayName);
+          }
+        });
+
+        const lines = ["Checkout my tml 2026 dj picks 🔥", ""];
+        [...grouped.keys()]
+          .sort()
+          .forEach((week) => {
+            lines.push(weekLabel(week));
+            const dates = grouped.get(week);
+            [...dates.keys()]
+              .sort()
+              .forEach((date) => {
+                const dayName = dayLabels.get(date);
+                lines.push(dayName ? `${dayName} ${date}` : date);
+                lines.push("");
+                dates
+                  .get(date)
+                  .sort((a, b) => a.artist.localeCompare(b.artist))
+                  .forEach((entry) => {
+                    lines.push(`${entry.artist} - ${entry.stage}`);
+                  });
+                lines.push("");
+              });
+          });
+
+        return lines.join("\n");
+      };
+
+      const renderSchedulePanel = () => {
+        scheduleContent.innerHTML = "";
+        if (!selected.size) {
+          const empty = document.createElement("p");
+          empty.className = "empty";
+          empty.textContent = "Select artists to build your schedule.";
+          scheduleContent.appendChild(empty);
+          return;
+        }
+
+        const grouped = new Map();
+        const weekLabel = (week) => (week === "W1" ? "Week 1" : "Week 2");
+
+        selected.forEach((entry) => {
+          if (!grouped.has(entry.week)) {
+            grouped.set(entry.week, new Map());
+          }
+          const weekGroup = grouped.get(entry.week);
+          if (!weekGroup.has(entry.day)) {
+            weekGroup.set(entry.day, new Map());
+          }
+          const dayGroup = weekGroup.get(entry.day);
+          if (!dayGroup.has(entry.stage)) {
+            dayGroup.set(entry.stage, []);
+          }
+          dayGroup.get(entry.stage).push(entry.artist);
+        });
+
+        [...grouped.keys()]
+          .sort()
+          .forEach((week) => {
+            const weekBlock = document.createElement("div");
+            weekBlock.className = "schedule-block";
+            const weekTitle = document.createElement("h4");
+            weekTitle.textContent = weekLabel(week);
+            weekBlock.appendChild(weekTitle);
+
+            const days = grouped.get(week);
+            [...days.keys()]
+              .sort()
+              .forEach((date) => {
+                const dayBlock = document.createElement("div");
+                dayBlock.className = "schedule-day";
+                const dayTitle = document.createElement("h5");
+                const dayName = document.querySelector(
+                  `[data-day-button][data-day="${date}"]`
+                )?.textContent;
+                dayTitle.textContent = dayName ? dayName : date;
+                dayBlock.appendChild(dayTitle);
+
+                const stages = days.get(date);
+                [...stages.keys()]
+                  .sort()
+                  .forEach((stage) => {
+                    const stageCard = document.createElement("div");
+                    stageCard.className = "schedule-card";
+                    const stageTitle = document.createElement("h6");
+                    stageTitle.textContent = stage;
+                    stageCard.appendChild(stageTitle);
+
+                    stages
+                      .get(stage)
+                      .sort((a, b) => a.localeCompare(b))
+                      .forEach((artist) => {
+                        const artistLine = document.createElement("p");
+                        artistLine.textContent = artist;
+                        stageCard.appendChild(artistLine);
+                      });
+
+                    dayBlock.appendChild(stageCard);
+                  });
+
+                weekBlock.appendChild(dayBlock);
+              });
+
+            scheduleContent.appendChild(weekBlock);
+          });
+      };
+
+      copyButton.addEventListener("click", async () => {
+        if (!selected.size) {
+          copyButton.textContent = "No selections";
+          setTimeout(() => {
+            copyButton.textContent = "Copy Schedule";
+          }, 1200);
+          return;
+        }
+
+        const text = buildShareText();
+        await navigator.clipboard.writeText(text);
+        copyButton.textContent = "Copied";
+        setTimeout(() => {
+          copyButton.textContent = "Copy Schedule";
+        }, 1200);
+      });
+
+      const updateShareLabels = (label) => {
+        shareButtons.forEach((button) => {
+          const text = button.querySelector(".share-text");
+          if (text) {
+            text.textContent = label;
+          }
+        });
+      };
+
+      shareButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+        const text = buildShareText();
+        if (!text) {
+          updateShareLabels("No picks");
+          setTimeout(() => {
+            updateShareLabels("Share");
+          }, 1200);
+          return;
+        }
+        if (navigator.share) {
+          await navigator.share({
+            title: "My Tomorrowland Schedule",
+            text,
+          });
+        } else {
+          await navigator.clipboard.writeText(text);
+          updateShareLabels("Copied");
+          setTimeout(() => {
+            updateShareLabels("Share");
+          }, 1200);
+        }
+        });
+      });
+
+      openScheduleButton.addEventListener("click", () => {
+        schedulePanel.classList.add("open");
+        schedulePanel.setAttribute("aria-hidden", "false");
+      });
+
+      schedulePanel.addEventListener("click", (event) => {
+        if (event.target.matches("[data-close-panel]")) {
+          schedulePanel.classList.remove("open");
+          schedulePanel.setAttribute("aria-hidden", "true");
+        }
+      });
+
+      updateSelected();
+      updateDayButtons();
+      updateVisibleSections();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --bg: #15070d;
+    --bg-soft: #1f0b14;
+    --panel: #281019;
+    --panel-light: #f6f1f3;
+    --accent: #a32351;
+    --accent-bright: #d04177;
+    --text: #f7eef2;
+    --text-muted: #c9b2be;
+    --pill-border: rgba(255, 255, 255, 0.12);
+    font-family: "Manrope", sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, rgba(185, 64, 107, 0.2), transparent 50%),
+      linear-gradient(180deg, #11050b, #1a0a12 45%, #14060c);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .page-glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(120, 36, 63, 0.4), transparent 60%),
+      radial-gradient(circle at 70% 30%, rgba(67, 18, 37, 0.35), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10, 4, 7, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .brand {
+    font-family: "DM Serif Display", serif;
+    letter-spacing: 0.2em;
+    font-size: 18px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .main-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 32px;
+    padding: 20px 48px 60px;
+  }
+
+  .hero {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-card {
+    width: min(900px, 100%);
+    background: rgba(28, 8, 15, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 36px;
+    padding: 32px 40px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    text-align: center;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-tag.ghost {
+    color: var(--text-muted);
+  }
+
+  .hero-card h1 {
+    font-family: "DM Serif Display", serif;
+    font-size: clamp(32px, 4vw, 48px);
+    margin: 0 0 12px;
+  }
+
+  .hero-card p {
+    margin: 0 auto 24px;
+    max-width: 560px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .hero-actions.secondary {
+    margin-bottom: 0;
+  }
+
+  .hero-actions.secondary + .hero-actions.secondary {
+    margin-top: 10px;
+  }
+
+  .pill {
+    border: 1px solid var(--pill-border);
+    background: transparent;
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pill .icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill .icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .count-badge {
+    margin-left: 10px;
+    background: rgba(208, 65, 119, 0.25);
+    border: 1px solid rgba(208, 65, 119, 0.5);
+    border-radius: 999px;
+    padding: 4px 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+
+  .pill.active,
+  .pill.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .pill.ghost {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .section-header h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+  }
+
+  .section-header p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .search input {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 999px;
+    min-width: 220px;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .lineup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .artist-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .search-card {
+    background: rgba(18, 6, 11, 0.9);
+    border-radius: 18px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .search-card h4 {
+    margin: 0 0 6px;
+    font-size: 16px;
+  }
+
+  .search-card .meta {
+    margin: 0 0 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .artist-tile {
+    background: rgba(18, 6, 11, 0.9);
+    border-radius: 18px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .artist-tile h4 {
+    margin: 0 0 6px;
+    font-size: 16px;
+  }
+
+  .artist-tile p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .stage-card {
+    background: rgba(18, 6, 11, 0.9);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+  }
+
+  .stage-card header {
+    padding: 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(152, 34, 77, 0.9), rgba(98, 18, 44, 0.9));
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+  }
+
+  .stage-body {
+    padding: 18px 16px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .artist {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .artist:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+  }
+
+  .artist.selected {
+    background: rgba(208, 65, 119, 0.2);
+    border-color: rgba(208, 65, 119, 0.6);
+    color: #fff;
+  }
+
+  .selection {
+    position: sticky;
+    top: 110px;
+    height: fit-content;
+  }
+
+  .selection-card {
+    background: rgba(22, 7, 13, 0.9);
+    border-radius: 24px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .selection-card h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .count {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .artist.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .schedule-panel {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 20;
+  }
+
+  .schedule-panel.open {
+    display: block;
+  }
+
+  .schedule-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 3, 6, 0.7);
+    backdrop-filter: blur(6px);
+  }
+
+  .schedule-sheet {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: min(520px, 100%);
+    background: rgba(18, 6, 11, 0.98);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .schedule-sheet header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .schedule-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .schedule-sheet h3 {
+    margin: 0;
+    font-size: 22px;
+  }
+
+  .schedule-content {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .schedule-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .schedule-block h4 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .schedule-day {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .schedule-day h5 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  .schedule-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 12px 14px;
+  }
+
+  .schedule-card h6 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .schedule-card p {
+    margin: 0 0 6px;
+    font-size: 13px;
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .site-footer {
+    padding: 24px 48px 40px;
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .site-header {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .main-nav {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    main {
+      grid-template-columns: 1fr;
+      padding: 20px 24px 60px;
+    }
+
+    .selection {
+      position: static;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-card {
+      padding: 24px;
+    }
+
+    .site-header {
+      padding: 16px 20px;
+    }
+
+    .main-nav {
+      gap: 12px;
+    }
+
+    .main-nav a {
+      font-size: 10px;
+    }
+  }
+</style>

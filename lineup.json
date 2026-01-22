@@ -1,0 +1,1228 @@
+{
+  "event": "Tomorrowland Belgium 2026",
+  "eventCode": "TL26BE",
+  "source": "https://belgium.tomorrowland.com/en/line-up/",
+  "generatedAt": "2026-01-22",
+  "weekends": [
+    {
+      "name": "W1",
+      "startDate": "2026-07-16 12:00",
+      "endDate": "2026-07-20 01:00",
+      "days": [
+        {
+          "date": "2026-07-17",
+          "day": "FRIDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "BISOUX",
+                "ROW1",
+                "Peterblue",
+                "KUKO",
+                "CARV",
+                "MANDY",
+                "Negitiv",
+                "Nico Moreno",
+                "Sara Landry"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Sacha Malice",
+                "Vernex",
+                "NRKi",
+                "Rayzen",
+                "elMefti",
+                "LOLALITA",
+                "BRENNT",
+                "DITHER",
+                "VON BIKR\u00c4V",
+                "Sandy Warez",
+                "Revenja",
+                "MIND COMPRESSOR",
+                "GPF",
+                "Dr Donk",
+                "LUNAKORPZ"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "Eileen",
+                "Kenny Montana",
+                "John Noseda",
+                "Bibi Seck",
+                "Sally C",
+                "Sasha",
+                "Young Marco",
+                "Modeselektor (DJ-set)"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "Eridu",
+                "Marsolo"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "MC Rim",
+                "Monsieur",
+                "High Grade Sound",
+                "Milinguap",
+                "Soul Shakers",
+                "Flavour Drop",
+                "Tola OG",
+                "Nona Van Braeckel",
+                "Unregular",
+                "Audiowave",
+                "Rick & James 80's Party"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "Rose Ringed",
+                "Max Styler",
+                "Miss Monique",
+                "Mind Against",
+                "Holy Priest",
+                "Semsei"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "To be announced"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "MC STRETCH",
+                "Chainsmokers",
+                "Disco Lines",
+                "Bassjackers",
+                "MATTN",
+                "Henri PFR",
+                "NERVO",
+                "Marlon Hoffstadt",
+                "NOVAH",
+                "Sebastian Ingrosso",
+                "Martin Garrix"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "Lerato Tsotetsi",
+                "Isa Roos",
+                "Rosey Gold",
+                "Vanco",
+                "Thakzin",
+                "Danni Gato",
+                "AWEN",
+                "Da Capo",
+                "Caiiro",
+                "Enoo Napa"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Bosart",
+                "Rino",
+                "Funktastix"
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "Cyborg-18",
+                "Yannick Thiry",
+                "Trip-Tamine",
+                "John OO Fleming",
+                "Firaga",
+                "Somnia",
+                "HI Profile",
+                "Fabio Fusco",
+                "Omiki",
+                "Neelix",
+                "Mad Maxx"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "To be announced"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "Da Tweekaz",
+                "MagiK",
+                "Manuals",
+                "Tomas Grey",
+                "DJ Sally",
+                "Whisnu Santika",
+                "Mike Williams",
+                "Sam Feldt",
+                "Ofenbach",
+                "R3HAB",
+                "ARTBAT",
+                "Nicky Romero",
+                "Hardwell",
+                "Sub Zero Project"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "ZUKE",
+                "Ben Malone"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "Murdock",
+                "A Little Sound",
+                "MAE.LIEN",
+                "STOOG3S",
+                "Blooom",
+                "Sudley",
+                "Primate",
+                "Aeon Mode",
+                "Kanine",
+                "Camo & Krooked"
+              ]
+            }
+          ]
+        },
+        {
+          "date": "2026-07-18",
+          "day": "SATURDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "Interactive Noise",
+                "Marhu",
+                "Estella Boersma",
+                "Elli Acula",
+                "Ben Klock",
+                "BIIA",
+                "Charlie Sparks",
+                "Indira Paganotto",
+                "Reinier Zonneveld (live)"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Luna Fields",
+                "Maike Depas",
+                "Dex phase",
+                "A.N.I.",
+                "Shl\u00f8mo",
+                "Byorn",
+                "Vieze Asbak"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "Capoon",
+                "Curol",
+                "Betical",
+                "Dino Lenny",
+                "Antdot",
+                "Samm",
+                "Ajna"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "Cici Daze",
+                "Dali",
+                "NOSI",
+                "Ben Hemsley",
+                "Morten",
+                "Malaa",
+                "Steve Angello"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "MC Claudio",
+                "sojuju & Julian Jermain",
+                "Lordesius & Anders",
+                "Pretty Girls Like Trap Music Soundsystem",
+                "Ballantine",
+                "Dieux-P\u00e9re",
+                "WEF",
+                "MELVIEE",
+                "Vunzige Deuntjes Soundsystem",
+                "Kurashi Soundsystem",
+                "Encore Soundsystem",
+                "Rockefellababe",
+                "Afrolosjes Soundsystem",
+                "Steww Soundsystem"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "Dave Lambert",
+                "Luna & Lenthe",
+                "Plastik Funk",
+                "Olympe",
+                "Space 92",
+                "Symphony of Unity",
+                "Meduza\u00b3",
+                "Netsky",
+                "Armin van Buuren"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "FONSI NIETO",
+                "Mark Roma"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "John Newman",
+                "MC STRETCH",
+                "Merow",
+                "Stephani B",
+                "Omdat Het Kan Soundsystem & Average Rob",
+                "Maddix",
+                "HAL\u014c",
+                "Boris Brejcha",
+                "Fisher",
+                "Dimitri Vegas & Like Mike",
+                "David Guetta"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "Emiliano Demarco",
+                "Hermanos Inglesos",
+                "UNREAD",
+                "Chinonegro",
+                "Idemi",
+                "Sam Shure",
+                "Twenty Six",
+                "Arado"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Jeroen Visser",
+                "Funkhauser",
+                "Jelle DK"
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "DVBBS",
+                "Lucas & Steve",
+                "Marnik",
+                "Ian Asher"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "Honey Gee",
+                "Encure",
+                "JOYSE",
+                "Ryan Spicer",
+                "Block & Crown",
+                "Diego Miranda",
+                "Dimitri Vangelis & Wyman",
+                "Yves V",
+                "Dj Nano",
+                "Matisse & Sadko",
+                "Will Sparks"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "CIEL.",
+                "Marwan Dua",
+                "Linska",
+                "Jazzy",
+                "Andromedik",
+                "Odymel",
+                "Agents of Time",
+                "Lost Frequencies",
+                "Oliver Heldens"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "The Spook",
+                "Los Bomberos",
+                "Aghatixx",
+                "Brits & Boen",
+                "Monta",
+                "Vitucci",
+                "Soulcity",
+                "Bobby & Djenko",
+                "Jonas van Opstal"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "MC Pyro",
+                "Just-K",
+                "Phi Phi",
+                "Jente",
+                "Neall",
+                "Blvckprint",
+                "GREG S.",
+                "DJ Furax",
+                "DJ Ghost",
+                "Push",
+                "Jan Vervloet",
+                "Funkhauser",
+                "Franky Kloeck",
+                "X-TOF",
+                "Bonzai All Stars"
+              ]
+            }
+          ]
+        },
+        {
+          "date": "2026-07-19",
+          "day": "SUNDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "Flour",
+                "VE/RA",
+                "Blondex",
+                "SHDW",
+                "\u00dcBERKIKZ",
+                "\u00d8tta",
+                "Anetha",
+                "Amelie Lens"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Klaps",
+                "Miamor",
+                "Hurts",
+                "ROW1",
+                "FUMI",
+                "HUJUS",
+                "David L\u00f6hlein",
+                "Yasmin Regisford",
+                "EMILIJA",
+                "Frederic Selected",
+                "Serafina",
+                "Zwilling",
+                "Adri\u00e1n Mills",
+                "SISU"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "Massignan.y",
+                "Ineffekt",
+                "Fafi Abdel Nour",
+                "Sedef Adas\u00ef",
+                "Avalon Emerson",
+                "Ben UFO",
+                "Job Jobse"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "DJ Gigola",
+                "Vintage Culture",
+                "DJ Tennis",
+                "Camila Jun",
+                "ELFIGO",
+                "WADE",
+                "Oscar and the Wolf"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "G-Lo",
+                "Sako Glitch",
+                "Favella Som Sistema",
+                "DJ FASTA",
+                "Noah",
+                "Team DAMP",
+                "Heaven Sam",
+                "Karyo",
+                "Tribal Kush",
+                "Sleazy Stereo",
+                "Jeronimo"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "ALOK",
+                "Neon",
+                "DJ Licious",
+                "Arielle Free",
+                "Jack Shore",
+                "Pegassi",
+                "Chase & Status",
+                "I Hate Models"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "ADAM K",
+                "Krevix",
+                "Sofia Cristo"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "John Summit",
+                "MC STRETCH",
+                "Kevin de Vries",
+                "B Jones",
+                "Alesso"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "CRISTINA TOSIO",
+                "Le Windey",
+                "DJ Gee",
+                "Christian82",
+                "Tania Moon",
+                "Cris Tosio",
+                "Lunnas",
+                "Marta Loe",
+                "Delafino",
+                "Dave Hang",
+                "Felix Da Funk"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Tom Cosyns",
+                "Les Mecs Eclectics",
+                "Jerrooo"
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "LEVEL UP",
+                "Subtronics",
+                "Exception",
+                "Punctual",
+                "Sabai",
+                "Arcando",
+                "Malaa's  Alter Ego",
+                "Liquid Stranger",
+                "Seven Lions"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "Sentin",
+                "Cyria (Hybrid)",
+                "Fake Mood",
+                "\u00d6ona Dahl",
+                "Helsloot",
+                "MXGPU (Hybrid)",
+                "Nico Morano",
+                "Xinobi"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "James Carter",
+                "Di\u00e8tro",
+                "Viktor",
+                "Kaaze",
+                "Gabry Ponte",
+                "Joel Corry",
+                "Blasterjaxx",
+                "Gryffin",
+                "Dimitri Vegas",
+                "Timmy Trumpet",
+                "Afrojack",
+                "Vini Vici"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "Nederhand",
+                "Benny Plays",
+                "Mell Tierra",
+                "Dries Smet",
+                "Noaffection",
+                "OM3N",
+                "Foxed Up",
+                "MITCHED",
+                "Coco Bevan",
+                "Godtripper"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "Villain",
+                "Digital Madness",
+                "The Z.",
+                "Adrenalize",
+                "TNT",
+                "Rooler",
+                "Isaac",
+                "Rebelion",
+                "Pat B",
+                "Sub Zero Project",
+                "The Saints"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "W2",
+      "startDate": "2026-07-23 12:00",
+      "endDate": "2026-07-27 01:00",
+      "days": [
+        {
+          "date": "2026-07-24",
+          "day": "FRIDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "Skeletor Yogi",
+                "BOY&GIRL",
+                "Mha Iri",
+                "Callush",
+                "Byorn",
+                "Shl\u00f8mo",
+                "DYEN",
+                "Maddix",
+                "AZYR",
+                "Onlynumbers",
+                "Holy Priest"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Bazzy",
+                "Toxic Twins",
+                "Imhappy",
+                "DJ Furax",
+                "NATTE VISSTICK",
+                "TODIEFOR",
+                "Yoshiko",
+                "DRS",
+                "Sandy Warez",
+                "Partyraiser",
+                "BULLETPROOF",
+                "TERRORCLOWN",
+                "LEKKERFACES"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "Fais Le Beau",
+                "Sixsixsixties",
+                "Kamma",
+                "Bibi Seck",
+                "Faisal",
+                "Ogaz\u00f3n",
+                "Bullet Tooth",
+                "Mall Grab",
+                "Oscar and the Wolf"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "Deco",
+                "Capoon",
+                "Malive",
+                "Joezi",
+                "Kitty Amor",
+                "Curol",
+                "Shimza",
+                "Hugel",
+                "Mahmut Orhan"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "Rosh",
+                "Brooke Bailey",
+                "Taliyah Ayana",
+                "VALENTINO IGNOTO",
+                "Iris Rooth",
+                "MIRO",
+                "Nems",
+                "$hirak",
+                "FLASH",
+                "Dany Neville",
+                "IRWAN",
+                "CHAM",
+                "UNEAK"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "JOA",
+                "Esin Boz",
+                "Aaron Hibell",
+                "Amber Broos",
+                "Juliet Fox",
+                "James Hype",
+                "Fisher",
+                "Alesso"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "Alan Alvarez & CRAZY SIR-G",
+                "Martin Trevy"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "MC STRETCH",
+                "Ely Oaks",
+                "Yves V",
+                "Miss Monique",
+                "Indira Paganotto",
+                "Nicky Romero",
+                "K\u00f6lsch",
+                "ALOK",
+                "Steve Angello",
+                "Hardwell"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "Spiessens",
+                "JOULIE",
+                "Planet Groove DJ's",
+                "John Noseda",
+                "Jeroen Delodder"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Prosit",
+                "Jo Cox",
+                "The Bobmeister"
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "Domi Re",
+                "Locus",
+                "Vitor Falabella",
+                "Beat Controllers",
+                "Firaga",
+                "Somnia",
+                "Phaxe",
+                "Blazy",
+                "Blastoyz",
+                "Avalon",
+                "Vegas",
+                "Electric Universe"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "Gissa",
+                "Saar Kuus",
+                "AAT",
+                "Ruze",
+                "Ranger Trucco",
+                "Belters Only",
+                "Mr. Belt & Wezol"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "Illenium",
+                "Meaghan",
+                "NOME.",
+                "5napback",
+                "Merow",
+                "B Jones",
+                "MANDY",
+                "Omdat Het Kan Soundsystem & Average Rob",
+                "HAL\u014c",
+                "Kaskade",
+                "Alan Walker"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "Lou8",
+                "Xijaro & Pitch",
+                "Mr. Joy",
+                "Mairee"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "Sullivan King",
+                "Jessica Audiffred",
+                "ALLEYCVT",
+                "Borgore",
+                "Ghengar",
+                "Basstripper",
+                "Riot Ten",
+                "Bou"
+              ]
+            }
+          ]
+        },
+        {
+          "date": "2026-07-25",
+          "day": "SATURDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "I Hate Models",
+                "NOVAH",
+                "Pegassi",
+                "EMILIJA",
+                "Noise Mafia",
+                "2hot2play",
+                "Kneiz"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Stanne",
+                "Mondello",
+                "Niotech",
+                "Uberjak'd feat Ella Young",
+                "Mero",
+                "Daire",
+                "IOSIO",
+                "X&Trick",
+                "Macon",
+                "Rune Evens"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "The Blessed Madonna",
+                "HAAi",
+                "Dino Lenny"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "John Summit",
+                "Max Styler",
+                "GUZ",
+                "Naomi Cazier"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "\u2060\u2060SHOARMA SOUNDSYSTEM",
+                "Eimco",
+                "Sandersville",
+                "Annabel Stop It",
+                "Nina Black",
+                "DJ ART",
+                "RUBY XX",
+                "Knox Kind"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "Mosimann",
+                "ELFIGO",
+                "Andromedik",
+                "Symphony of Unity",
+                "Massano",
+                "Argy",
+                "Sebastian Ingrosso",
+                "Timmy Trumpet"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "Mosimann",
+                "Carly Wilford",
+                "Yazeed Alhashim"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "MC STRETCH",
+                "Calvin Harris",
+                "Dimitri Vegas & Like Mike",
+                "Armin van Buuren",
+                "Sub Zero Project",
+                "Agents of Time",
+                "Morten",
+                "Odymel",
+                "Mike Williams",
+                "Angemi"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "Sam Girling",
+                "S\u00e9a",
+                "Geheimzinnig Soundsystem",
+                "Larry Masmero",
+                "Soulastico",
+                "Tohma",
+                "Emilia De La Paz",
+                "Mooris"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Kurt Verheyen",
+                "MR. E.",
+                "Mobius One"
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "Joris Voorn",
+                "Konstantin Sibold",
+                "Colyn",
+                "Sainte Vie",
+                "Yulia Niko",
+                "Dyzen",
+                "Yet More",
+                "Alicia Hahn",
+                "Tim Bliss",
+                "NA:TUS"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "Bingo Players with Iceman",
+                "Dannic",
+                "Dyro",
+                "Gregor Salto",
+                "Sander van Doorn",
+                "Chocolate Puma",
+                "Dada Life",
+                "Swanky Tunes",
+                "LNY TNZ: Jump Never Dies (Take-Over)",
+                "Odssey",
+                "Yamo"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "Netsky",
+                "Gorgon City",
+                "Lost Frequencies",
+                "Chris Lorenzo",
+                "Sonny Fodera",
+                "Wilkinson",
+                "Henri PFR",
+                "ZHU",
+                "Mesto",
+                "me n \u00fc",
+                "Radio Cargo"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "Justin Wilkes",
+                "Jorn Pricez",
+                "Flowchief",
+                "Roma"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "Quincy",
+                "Danny Corten",
+                "Maite\u00a0Dedecker",
+                "Dimitri Cooman",
+                "DJ Ghost",
+                "Franky Kloeck",
+                "Jamie Dill",
+                "Youri Parker",
+                "Bountyhunter",
+                "Cherry Moon Legends (& Friends)"
+              ]
+            }
+          ]
+        },
+        {
+          "date": "2026-07-26",
+          "day": "SUNDAY",
+          "stages": [
+            {
+              "name": "ATMOSPHERE",
+              "artists": [
+                "Trym",
+                "Kobosil",
+                "Nikolina",
+                "Adri\u00e1n Mills",
+                "Alycia Bezgo",
+                "BIIANCO",
+                "Portex",
+                "Rianna Holley",
+                "Mirage"
+              ]
+            },
+            {
+              "name": "CAGE",
+              "artists": [
+                "Freddy K",
+                "Blasha & Allatt",
+                "Quelza",
+                "Amotik",
+                "Netty Hugo",
+                "Amalie"
+              ]
+            },
+            {
+              "name": "CORE",
+              "artists": [
+                "Malugi",
+                "Lammer",
+                "Helena Lauwaert",
+                "Saidah",
+                "Kellar",
+                "Catalina"
+              ]
+            },
+            {
+              "name": "CRYSTAL GARDEN",
+              "artists": [
+                "Kevin de Vries",
+                "Meduza",
+                "Mind Against",
+                "Like Mike",
+                "Brina Knauss",
+                "Bhaskar",
+                "Franc Fala",
+                "Benja"
+              ]
+            },
+            {
+              "name": "ELIXIR",
+              "artists": [
+                "Michael Amani",
+                "Ja\u00ebl Ost & MagiK",
+                "Kav Verhouzer & de Hofnar presents: Eurodance",
+                "Karakals",
+                "Lennert Wolfs",
+                "REEZE",
+                "Dino"
+              ]
+            },
+            {
+              "name": "FREEDOM BY BUD",
+              "artists": [
+                "Amelie Lens",
+                "Rezz",
+                "ARTBAT",
+                "Fideles",
+                "Korolova",
+                "Push only",
+                "Axel Haube"
+              ]
+            },
+            {
+              "name": "HOUSE OF FORTUNE BY JBL",
+              "artists": [
+                "The Rocketman",
+                "Tigerlily",
+                "The Criminal Sounds",
+                "DJ Lex"
+              ]
+            },
+            {
+              "name": "MAINSTAGE",
+              "artists": [
+                "MC STRETCH",
+                "Martin Garrix",
+                "Steve Aoki",
+                "Lost Frequencies",
+                "Afrojack",
+                "R3HAB",
+                "Sara Landry",
+                "Chase & Status",
+                "Lucas & Steve",
+                "Cyril",
+                "Odd Mob"
+              ]
+            },
+            {
+              "name": "MELODIA BY CORONA",
+              "artists": [
+                "Eli Rojas",
+                "Delafino",
+                "Luna Fino",
+                "Oriol Calvo",
+                "Alex Kennon",
+                "Valent\u00edn Huedo",
+                "Rayco Santos",
+                "Cristiano Da Silva",
+                "Bobbi Antonni",
+                "Dominico"
+              ]
+            },
+            {
+              "name": "MOOSE BAR",
+              "artists": [
+                "Jan V",
+                "Brian",
+                "MR. E."
+              ]
+            },
+            {
+              "name": "PLANAXIS",
+              "artists": [
+                "Okayval",
+                "Chuckie",
+                "Quintino",
+                "Superheroes",
+                "Laidback Luke",
+                "Deorro",
+                "Sick individuals",
+                "Yves V",
+                "StadiumX",
+                "Thomas Gold"
+              ]
+            },
+            {
+              "name": "RISE",
+              "artists": [
+                "HU",
+                "Morgan Seatree",
+                "Paige Tomlinson",
+                "Bella Claxton",
+                "Kyle Starkey",
+                "Newtone",
+                "Lisa Korver",
+                "Mendosa"
+              ]
+            },
+            {
+              "name": "THE LIBRARY",
+              "artists": [
+                "Brennan Heart",
+                "Dimitri Vegas",
+                "Bassjackers",
+                "Nico Moreno",
+                "NERVO",
+                "MATTN",
+                "Hypaton",
+                "Darren Styles",
+                "Diego Miranda",
+                "Jerry Davila"
+              ]
+            },
+            {
+              "name": "THE RAVE CAVE",
+              "artists": [
+                "YERUN",
+                "EME",
+                "Kriss Reeve",
+                "Muze",
+                "Mr. Rewind",
+                "Neon",
+                "D. Guaetta",
+                "Hyalyte"
+              ]
+            },
+            {
+              "name": "THE ROSE GARDEN",
+              "artists": [
+                "Villain",
+                "The Straikerz",
+                "Warface",
+                "Da Tweekaz",
+                "Coone",
+                "Sound Rush",
+                "The Purge",
+                "Hard Driver",
+                "Mark With a K & MC Chucky",
+                "D-Charged b2b Serzo",
+                "Lost Identity",
+                "BassBrain"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
