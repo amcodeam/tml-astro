@@ -1,6 +1,8 @@
 ---
 import weekend1 from "../../weekend1.json";
 import weekend2 from "../../weekend2.json";
+import hSj from "../../hSj.png";
+import jSh from "../../jSh.png";
 
 const buildWeekend = (data, name) => {
   const byDate = new Map();
@@ -65,7 +67,7 @@ const formatDay = (festivalDay) =>
       data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
     ></script>
   </head>
-  <body>
+  <body data-easter-egg-images={JSON.stringify([hSj.src, jSh.src])}>
     <div class="page-glow"></div>
     <header class="site-header">
       <div class="brand">TML 26</div>
@@ -352,7 +354,7 @@ const formatDay = (festivalDay) =>
     </div>
 
     <footer class="site-footer">
-      <p>Just for fun, will delete later - Amir 🔥</p>
+      <p id="footer-message">Just for fun, will delete later - Amir 🔥</p>
     </footer>
 
     <script type="module">
@@ -371,6 +373,14 @@ const formatDay = (festivalDay) =>
       const scheduleContent = document.getElementById("schedule-content");
       const scheduleCount = document.getElementById("schedule-count");
       const clearScheduleButton = document.getElementById("clear-schedule");
+      const footerMessage = document.getElementById("footer-message");
+      const easterEggImages = JSON.parse(
+        document.body.dataset.easterEggImages || "[]"
+      )
+        .map((image) => (typeof image === "string" ? image : image?.src))
+        .filter(Boolean);
+      let footerClickCount = 0;
+      let footerClickTimer;
       let activeView = "stages";
       let activeWeek = weekButtons[0]?.dataset.week;
       let activeDay = dayButtons[0]?.dataset.day;
@@ -659,7 +669,7 @@ const formatDay = (festivalDay) =>
                 lines.push("");
               });
           });
-
+        lines.push("create your schedule on https://mytml26.ameercode.com");
         return lines.join("\n");
       };
 
@@ -851,6 +861,69 @@ const formatDay = (festivalDay) =>
           item.classList.remove("selected");
         });
         updateSelected();
+      });
+
+      const triggerEasterEgg = () => {
+        if (document.querySelector(".easter-egg")) {
+          return;
+        }
+        const overlay = document.createElement("div");
+        overlay.className = "easter-egg";
+
+        const colors = [
+          "#ff6b6b",
+          "#f7b267",
+          "#ffd166",
+          "#7bdff2",
+          "#cdb4db",
+          "#f28482",
+        ];
+        for (let i = 0; i < 70; i += 1) {
+          const piece = document.createElement("span");
+          piece.className = "confetti-piece";
+          piece.style.setProperty("--x", `${Math.random() * 100}vw`);
+          piece.style.setProperty("--delay", `${Math.random() * 1.5}s`);
+          piece.style.setProperty("--duration", `${2 + Math.random() * 2.5}s`);
+          piece.style.setProperty(
+            "--rotate",
+            `${Math.floor(Math.random() * 360)}deg`
+          );
+          piece.style.setProperty(
+            "--confetti-color",
+            colors[Math.floor(Math.random() * colors.length)]
+          );
+          overlay.appendChild(piece);
+        }
+
+        easterEggImages.forEach((src, index) => {
+          const bouncer = document.createElement("div");
+          bouncer.className = "easter-egg-bouncer";
+          bouncer.style.backgroundImage = `url(${src})`;
+          bouncer.style.setProperty("--x-start", `${-10 + Math.random() * 120}vw`);
+          bouncer.style.setProperty("--y-start", `${-10 + Math.random() * 120}vh`);
+          bouncer.style.setProperty("--x-end", `${-20 + Math.random() * 140}vw`);
+          bouncer.style.setProperty("--y-end", `${-20 + Math.random() * 140}vh`);
+          bouncer.style.setProperty("--delay", `${index * 0.2}s`);
+          bouncer.style.setProperty("--duration", `${1.2 + Math.random() * 1.2}s`);
+          overlay.appendChild(bouncer);
+        });
+
+        document.body.appendChild(overlay);
+        setTimeout(() => {
+          overlay.remove();
+        }, 10000);
+      };
+
+      footerMessage?.addEventListener("click", () => {
+        footerClickCount += 1;
+        clearTimeout(footerClickTimer);
+        footerClickTimer = setTimeout(() => {
+          footerClickCount = 0;
+        }, 1200);
+        if (footerClickCount >= 5) {
+          footerClickCount = 0;
+          triggerEasterEgg();
+        }
       });
 
       updateSelected();
@@ -1414,6 +1487,62 @@ const formatDay = (festivalDay) =>
     color: var(--text-muted);
     text-align: center;
     font-size: 12px;
+  }
+
+  #footer-message {
+    cursor: pointer;
+  }
+
+  .easter-egg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    overflow: hidden;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    top: -10vh;
+    left: var(--x);
+    width: 6px;
+    height: 12px;
+    background: var(--confetti-color);
+    opacity: 0.85;
+    border-radius: 2px;
+    transform: rotate(var(--rotate));
+    animation: confetti-fall var(--duration) linear var(--delay) infinite;
+  }
+
+  .easter-egg-bouncer {
+    position: absolute;
+    width: 144px;
+    height: 144px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    animation: easter-bounce var(--duration) ease-in-out var(--delay) infinite
+      alternate;
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-10vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+    }
+  }
+
+  @keyframes easter-bounce {
+    0% {
+      transform: translate(var(--x-start), var(--y-start));
+    }
+    100% {
+      transform: translate(var(--x-end), var(--y-end));
+    }
   }
 
   .hidden {
