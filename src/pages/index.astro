@@ -880,9 +880,9 @@ const formatDay = (festivalDay) =>
 
   main {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-columns: minmax(0, 1fr);
     gap: 32px;
-    padding: 20px 48px 60px;
+    padding: 20px 32px 60px;
   }
 
   .hero {
@@ -1032,27 +1032,31 @@ const formatDay = (festivalDay) =>
   }
 
   .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    column-width: 280px;
+    column-gap: 16px;
+    width: min(100%, 1168px);
+    margin: 0 auto;
   }
 
   .lineup-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+    column-width: 280px;
+    column-gap: 16px;
+    width: min(100%, 1168px);
+    margin: 0 auto;
   }
 
   .artist-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    column-width: 280px;
+    column-gap: 16px;
+    width: min(100%, 1168px);
+    margin: 0 auto;
   }
 
   .search-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    column-width: 280px;
+    column-gap: 16px;
+    width: min(100%, 1168px);
+    margin: 0 auto;
   }
 
   .search-card {
@@ -1064,6 +1068,9 @@ const formatDay = (festivalDay) =>
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    break-inside: avoid;
+    margin-bottom: 16px;
+    width: 100%;
   }
 
   .search-card h4 {
@@ -1088,6 +1095,9 @@ const formatDay = (festivalDay) =>
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    break-inside: avoid;
+    margin-bottom: 16px;
+    width: 100%;
   }
 
   .artist-tile h4 {
@@ -1110,7 +1120,9 @@ const formatDay = (festivalDay) =>
     border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    min-height: 260px;
+    width: 100%;
+    break-inside: avoid;
+    margin-bottom: 16px;
   }
 
   .stage-card header {
@@ -1344,4 +1356,5 @@ const formatDay = (festivalDay) =>
       font-size: 10px;
     }
   }
+
 </style>
