@@ -317,7 +317,12 @@ const formatDay = (festivalDay) =>
       <div class="schedule-backdrop" data-close-panel></div>
       <div class="schedule-sheet">
         <header>
-          <h3>My Schedule</h3>
+          <div class="schedule-title">
+            <h3>My Schedule</h3>
+            <button class="pill danger" id="clear-schedule" type="button">
+              Clear all
+            </button>
+          </div>
           <div class="schedule-actions">
             <button class="pill ghost" data-share aria-label="Share schedule">
               <span class="icon">
@@ -365,6 +370,7 @@ const formatDay = (festivalDay) =>
       const schedulePanel = document.getElementById("schedule-panel");
       const scheduleContent = document.getElementById("schedule-content");
       const scheduleCount = document.getElementById("schedule-count");
+      const clearScheduleButton = document.getElementById("clear-schedule");
       let activeView = "stages";
       let activeWeek = weekButtons[0]?.dataset.week;
       let activeDay = dayButtons[0]?.dataset.day;
@@ -682,7 +688,7 @@ const formatDay = (festivalDay) =>
           if (!dayGroup.has(entry.stage)) {
             dayGroup.set(entry.stage, []);
           }
-          dayGroup.get(entry.stage).push(entry.artist);
+          dayGroup.get(entry.stage).push(entry);
         });
 
         [...grouped.keys()]
@@ -719,10 +725,26 @@ const formatDay = (festivalDay) =>
 
                     stages
                       .get(stage)
-                      .sort((a, b) => a.localeCompare(b))
-                      .forEach((artist) => {
-                        const artistLine = document.createElement("p");
-                        artistLine.textContent = artist;
+                      .sort((a, b) => a.artist.localeCompare(b.artist))
+                      .forEach((entry) => {
+                        const artistLine = document.createElement("div");
+                        artistLine.className = "schedule-artist";
+
+                        const artistName = document.createElement("span");
+                        artistName.textContent = entry.artist;
+
+                        const removeButton = document.createElement("button");
+                        removeButton.type = "button";
+                        removeButton.className = "schedule-remove";
+                        removeButton.dataset.removeKey = `${entry.week}|${entry.day}|${entry.artist}|${entry.stage}`;
+                        removeButton.setAttribute(
+                          "aria-label",
+                          `Remove ${entry.artist}`
+                        );
+                        removeButton.textContent = "×";
+
+                        artistLine.appendChild(artistName);
+                        artistLine.appendChild(removeButton);
                         stageCard.appendChild(artistLine);
                       });
 
@@ -799,6 +821,38 @@ const formatDay = (festivalDay) =>
         }
       });
 
+      scheduleContent.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-remove-key]");
+        if (!button) {
+          return;
+        }
+        const key = button.dataset.removeKey;
+        if (!key || !selected.has(key)) {
+          return;
+        }
+        const entry = selected.get(key);
+        selected.delete(key);
+        document
+          .querySelectorAll(
+            `.artist[data-artist="${entry.artist}"][data-stage="${entry.stage}"][data-week="${entry.week}"][data-day="${entry.day}"]`
+          )
+          .forEach((item) => {
+            item.classList.remove("selected");
+          });
+        updateSelected();
+      });
+
+      clearScheduleButton?.addEventListener("click", () => {
+        if (!selected.size) {
+          return;
+        }
+        selected.clear();
+        document.querySelectorAll(".artist.selected").forEach((item) => {
+          item.classList.remove("selected");
+        });
+        updateSelected();
+      });
+
       updateSelected();
       updateDayButtons();
       updateVisibleSections();
@@ -815,6 +869,8 @@ const formatDay = (festivalDay) =>
     --panel-light: #f6f1f3;
     --accent: #a32351;
     --accent-bright: #d04177;
+    --danger: #d24b58;
+    --danger-bright: #f06d6a;
     --text: #f7eef2;
     --text-muted: #c9b2be;
     --pill-border: rgba(255, 255, 255, 0.12);
@@ -993,6 +1049,17 @@ const formatDay = (festivalDay) =>
     background: linear-gradient(135deg, var(--accent), var(--accent-bright));
     border-color: transparent;
     color: #fff;
+  }
+
+  .pill.danger {
+    background: transparent;
+    border-color: rgba(210, 75, 88, 0.5);
+    color: #f2a1a6;
+    opacity: 0.75;
+  }
+
+  .pill.danger:hover {
+    opacity: 0.9;
   }
 
   .pill.ghost {
@@ -1230,7 +1297,20 @@ const formatDay = (festivalDay) =>
   .schedule-sheet header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  .schedule-title {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .schedule-title .pill {
+    align-self: flex-start;
+    padding: 8px 16px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
   }
 
   .schedule-actions {
@@ -1291,9 +1371,36 @@ const formatDay = (festivalDay) =>
     text-transform: uppercase;
   }
 
-  .schedule-card p {
+  .schedule-artist {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     margin: 0 0 6px;
     font-size: 13px;
+  }
+
+  .schedule-artist:last-child {
+    margin-bottom: 0;
+  }
+
+  .schedule-remove {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(210, 75, 88, 0.2);
+    color: var(--text);
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .schedule-remove:hover {
+    background: rgba(210, 75, 88, 0.35);
   }
 
   .empty {
