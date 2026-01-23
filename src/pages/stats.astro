@@ -1,0 +1,315 @@
+---
+import statsScript from "../scripts/stats.js?url";
+
+const sections = [
+  {
+    id: "overall",
+    title: "Top 10 Overall",
+    description: "Live favorites across both weekends.",
+  },
+  {
+    id: "week1",
+    title: "Top 10 Week 1",
+    description: "Most selected artists from weekend one.",
+  },
+  {
+    id: "week2",
+    title: "Top 10 Week 2",
+    description: "Most selected artists from weekend two.",
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cool Stats - Tomorrowland Line-Up Selector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body data-convex-url={import.meta.env.PUBLIC_CONVEX_URL}>
+    <div class="page-glow"></div>
+    <header class="site-header">
+      <div class="brand">TML 26</div>
+      <div class="header-actions">
+        <a class="pill ghost" href="/">Line-Up</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card">
+          <div class="hero-top">
+            <span class="hero-tag">Cool Stats</span>
+          </div>
+          <h1>Real-time DJ favorites.</h1>
+          <p>
+            These rankings update live based on every pick made on the line-up
+            page. Add or remove artists and watch the lists shift.
+          </p>
+          <p class="status" data-status>
+            Live feed ready. Your picks update these lists instantly.
+          </p>
+        </div>
+      </section>
+
+      <section class="stats-grid hidden" data-stats-grid>
+        {sections.map((section) => (
+          <article class="stats-card" data-panel={section.id}>
+            <header>
+              <h2>{section.title}</h2>
+              <p>{section.description}</p>
+            </header>
+            <ol class="stats-list" data-list={section.id}></ol>
+            <p class="empty" data-empty={section.id}>
+              No picks yet. Make a selection to start the leaderboard.
+            </p>
+          </article>
+        ))}
+      </section>
+    </main>
+
+    <script type="module" src={statsScript}></script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --bg: #15070d;
+    --bg-soft: #1f0b14;
+    --panel: #281019;
+    --panel-light: #f6f1f3;
+    --accent: #a32351;
+    --accent-bright: #d04177;
+    --text: #f7eef2;
+    --text-muted: #c9b2be;
+    --pill-border: rgba(255, 255, 255, 0.12);
+    font-family: "Manrope", sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, rgba(185, 64, 107, 0.2), transparent 50%),
+      linear-gradient(180deg, #11050b, #1a0a12 45%, #14060c);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .page-glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(120, 36, 63, 0.4), transparent 60%),
+      radial-gradient(circle at 70% 30%, rgba(67, 18, 37, 0.35), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10, 4, 7, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .brand {
+    font-family: "DM Serif Display", serif;
+    letter-spacing: 0.2em;
+    font-size: 18px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  main {
+    display: grid;
+    gap: 32px;
+    padding: 20px 32px 60px;
+  }
+
+  .hero {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-card {
+    width: min(900px, 100%);
+    background: rgba(28, 8, 15, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 36px;
+    padding: 32px 40px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    text-align: center;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-card h1 {
+    font-family: "DM Serif Display", serif;
+    font-size: clamp(32px, 4vw, 48px);
+    margin: 0 0 12px;
+  }
+
+  .hero-card p {
+    margin: 0 auto 16px;
+    max-width: 560px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .status {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .stats-card {
+    background: rgba(18, 6, 11, 0.9);
+    border-radius: 24px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 320px;
+  }
+
+  .stats-card header h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
+
+  .stats-card header p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .stats-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .rank {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .count {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .pill {
+    border: 1px solid var(--pill-border);
+    background: transparent;
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .pill.ghost {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .site-header {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    main {
+      padding: 20px 24px 60px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-card {
+      padding: 24px;
+    }
+
+    .site-header {
+      padding: 16px 20px;
+    }
+  }
+</style>
