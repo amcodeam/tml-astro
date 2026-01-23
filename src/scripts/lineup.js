@@ -1,8 +1,21 @@
-import { ConvexClient } from "convex/browser";
-
 const convexUrl = import.meta.env.PUBLIC_CONVEX_URL;
-const convexClient = convexUrl ? new ConvexClient(convexUrl) : null;
+let convexClientPromise;
 const updateArtistCount = "artistCounts:updateArtistCount";
+
+const getConvexClient = () => {
+  if (!convexUrl) {
+    return Promise.resolve(null);
+  }
+  if (!convexClientPromise) {
+    convexClientPromise = import("convex/browser")
+      .then(({ ConvexClient }) => new ConvexClient(convexUrl))
+      .catch((error) => {
+        console.error("Convex client failed to load", error);
+        return null;
+      });
+  }
+  return convexClientPromise;
+};
 
 const selected = new Map();
 const stageSearchInputs = document.querySelectorAll("[data-stage-search]");
@@ -33,14 +46,16 @@ let activeWeek = weekButtons[0]?.dataset.week;
 let activeDay = dayButtons[0]?.dataset.day;
 
 const updateArtistStats = (entry, delta) => {
-  if (!convexClient) {
-    return;
-  }
-  convexClient
-    .mutation(updateArtistCount, {
-      artist: entry.artist,
-      week: entry.week,
-      delta,
+  getConvexClient()
+    .then((client) => {
+      if (!client) {
+        return null;
+      }
+      return client.mutation(updateArtistCount, {
+        artist: entry.artist,
+        week: entry.week,
+        delta,
+      });
     })
     .catch((error) => {
       console.error("Failed to update artist stats", error);
