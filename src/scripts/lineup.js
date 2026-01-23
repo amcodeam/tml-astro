@@ -20,6 +20,7 @@ const getConvexClient = () => {
 };
 
 const selected = new Map();
+const storageKey = "tml-selected-artists";
 const stageSearchInputs = document.querySelectorAll("[data-stage-search]");
 const artistSearchInputs = document.querySelectorAll("[data-artist-search]");
 const searchClearButtons = document.querySelectorAll(".search-clear");
@@ -93,7 +94,59 @@ const updateSelected = () => {
   if (scheduleCount) {
     scheduleCount.textContent = String(selected.size);
   }
+  saveSelections();
   renderSchedulePanel();
+};
+
+const saveSelections = () => {
+  if (typeof localStorage === "undefined") {
+    return;
+  }
+  const payload = [...selected.values()].map((entry) => ({
+    artist: entry.artist,
+    stage: entry.stage,
+    week: entry.week,
+    day: entry.day,
+    dayName: entry.dayName,
+  }));
+  localStorage.setItem(storageKey, JSON.stringify(payload));
+};
+
+const loadSelections = () => {
+  if (typeof localStorage === "undefined") {
+    return;
+  }
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) {
+    return;
+  }
+  try {
+    const saved = JSON.parse(raw);
+    if (!Array.isArray(saved)) {
+      return;
+    }
+    saved.forEach((entry) => {
+      if (!entry?.artist || !entry?.stage || !entry?.week || !entry?.day) {
+        return;
+      }
+      const key = `${entry.week}|${entry.day}|${entry.artist}|${entry.stage}`;
+      selected.set(key, entry);
+    });
+  } catch (error) {
+    console.error("Failed to load saved selections", error);
+  }
+};
+
+const hydrateSelectionStyles = () => {
+  selected.forEach((entry) => {
+    document
+      .querySelectorAll(
+        `.artist[data-artist="${entry.artist}"][data-stage="${entry.stage}"][data-week="${entry.week}"][data-day="${entry.day}"]`
+      )
+      .forEach((item) => {
+        item.classList.add("selected");
+      });
+  });
 };
 
 const bindArtistButton = (button) => {
@@ -739,6 +792,8 @@ footerMessage?.addEventListener("click", () => {
   }
 });
 
+loadSelections();
+hydrateSelectionStyles();
 updateSelected();
 updateDayButtons();
 updateVisibleSections();
