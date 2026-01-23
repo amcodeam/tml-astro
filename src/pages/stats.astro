@@ -1,4 +1,6 @@
 ---
+import statsScript from "../scripts/stats.js?url";
+
 const sections = [
   {
     id: "overall",
@@ -31,7 +33,7 @@ const sections = [
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body data-convex-url={import.meta.env.PUBLIC_CONVEX_URL}>
     <div class="page-glow"></div>
     <header class="site-header">
       <div class="brand">TML 26</div>
@@ -73,7 +75,7 @@ const sections = [
       </section>
     </main>
 
-    <script type="module" src="/src/scripts/stats.js"></script>
+    <script type="module" src={statsScript}></script>
   </body>
 </html>
 

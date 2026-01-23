@@ -3,6 +3,7 @@ import weekend1 from "../../weekend1.json";
 import weekend2 from "../../weekend2.json";
 import hSj from "../../hSj.png";
 import jSh from "../../jSh.png";
+import lineupScript from "../scripts/lineup.js?url";
 
 const buildWeekend = (data, name) => {
   const byDate = new Map();
@@ -67,7 +68,10 @@ const formatDay = (festivalDay) =>
       data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
     ></script>
   </head>
-  <body data-easter-egg-images={JSON.stringify([hSj.src, jSh.src])}>
+  <body
+    data-easter-egg-images={JSON.stringify([hSj.src, jSh.src])}
+    data-convex-url={import.meta.env.PUBLIC_CONVEX_URL}
+  >
     <div class="page-glow"></div>
     <header class="site-header">
       <div class="brand">TML 26</div>
@@ -366,7 +370,7 @@ const formatDay = (festivalDay) =>
       <p id="footer-message">Just for fun, will delete later - Amir 🔥</p>
     </footer>
 
-    <script type="module" src="/src/scripts/lineup.js"></script>
+    <script type="module" src={lineupScript}></script>
   </body>
 </html>
 

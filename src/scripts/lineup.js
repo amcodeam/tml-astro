@@ -1,4 +1,4 @@
-const convexUrl = import.meta.env.PUBLIC_CONVEX_URL;
+const convexUrl = document.body.dataset.convexUrl;
 let convexClientPromise;
 const updateArtistCount = "artistCounts:updateArtistCount";
 
@@ -7,7 +7,7 @@ const getConvexClient = () => {
     return Promise.resolve(null);
   }
   if (!convexClientPromise) {
-    convexClientPromise = import("convex/browser")
+    convexClientPromise = import("https://esm.sh/convex@1.31.6/browser")
       .then(({ ConvexClient }) => new ConvexClient(convexUrl))
       .catch((error) => {
         console.error("Convex client failed to load", error);
