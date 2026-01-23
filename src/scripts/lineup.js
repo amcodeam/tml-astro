@@ -1,6 +1,8 @@
 const convexUrl = document.body.dataset.convexUrl;
 let convexClientPromise;
 const updateArtistCount = "artistCounts:updateArtistCount";
+const statsFlagKey = "stats_page";
+let statsEnabled = false;
 
 const getConvexClient = () => {
   if (!convexUrl) {
@@ -33,6 +35,7 @@ const schedulePanel = document.getElementById("schedule-panel");
 const scheduleContent = document.getElementById("schedule-content");
 const scheduleCount = document.getElementById("schedule-count");
 const clearScheduleButton = document.getElementById("clear-schedule");
+const statsLink = document.querySelector("[data-stats-link]");
 const footerMessage = document.getElementById("footer-message");
 const easterEggImages = JSON.parse(
   document.body.dataset.easterEggImages || "[]"
@@ -46,6 +49,9 @@ let activeWeek = weekButtons[0]?.dataset.week;
 let activeDay = dayButtons[0]?.dataset.day;
 
 const updateArtistStats = (entry, delta) => {
+  if (!statsEnabled) {
+    return;
+  }
   getConvexClient()
     .then((client) => {
       if (!client) {
@@ -61,6 +67,27 @@ const updateArtistStats = (entry, delta) => {
       console.error("Failed to update artist stats", error);
     });
 };
+
+const updateStatsVisibility = (enabled) => {
+  statsEnabled = Boolean(enabled);
+  if (statsLink) {
+    statsLink.classList.toggle("hidden", !statsEnabled);
+  }
+};
+
+getConvexClient()
+  .then((client) => {
+    if (!client) {
+      updateStatsVisibility(false);
+      return;
+    }
+    client.onUpdate("featureFlags:getFeatureFlag", { key: statsFlagKey }, (isOn) => {
+      updateStatsVisibility(isOn);
+    });
+  })
+  .catch(() => {
+    updateStatsVisibility(false);
+  });
 
 const updateSelected = () => {
   if (scheduleCount) {

@@ -9,6 +9,7 @@
  */
 
 import type * as artistCounts from "../artistCounts.js";
+import type * as featureFlags from "../featureFlags.js";
 
 import type {
   ApiFromModules,
@@ -18,6 +19,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   artistCounts: typeof artistCounts;
+  featureFlags: typeof featureFlags;
 }>;
 
 /**

@@ -9,4 +9,9 @@ export default defineSchema({
     week2: v.number(),
     updatedAt: v.number(),
   }).index("by_artist", ["artist"]),
+  featureFlags: defineTable({
+    key: v.string(),
+    enabled: v.boolean(),
+    updatedAt: v.number(),
+  }).index("by_key", ["key"]),
 });

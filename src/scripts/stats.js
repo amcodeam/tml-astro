@@ -1,6 +1,7 @@
 const convexUrl = document.body.dataset.convexUrl;
 const topOverall = "artistCounts:topArtistsOverall";
 const topByWeek = "artistCounts:topArtistsByWeek";
+const statsFlagKey = "stats_page";
 const status = document.querySelector("[data-status]");
 let convexClientPromise;
 
@@ -28,6 +29,9 @@ const emptyNodes = {
   week1: document.querySelector('[data-empty="week1"]'),
   week2: document.querySelector('[data-empty="week2"]'),
 };
+const statsGrid = document.querySelector("[data-stats-grid]");
+let statsEnabled = false;
+let statsSubscribed = false;
 
 const renderList = (key, items) => {
   const list = listNodes[key];
@@ -64,6 +68,61 @@ const renderList = (key, items) => {
   });
 };
 
+const clearLists = () => {
+  Object.keys(listNodes).forEach((key) => {
+    const list = listNodes[key];
+    const empty = emptyNodes[key];
+    if (list) {
+      list.innerHTML = "";
+    }
+    if (empty) {
+      empty.classList.remove("hidden");
+    }
+  });
+};
+
+const setStatsMode = (enabled) => {
+  statsEnabled = Boolean(enabled);
+  if (statsGrid) {
+    statsGrid.classList.toggle("hidden", !statsEnabled);
+  }
+  if (status) {
+    status.textContent = statsEnabled
+      ? "Live feed ready. Your picks update these lists instantly."
+      : "Stats are turned off right now.";
+  }
+  if (!statsEnabled) {
+    clearLists();
+  }
+};
+
+const subscribeStats = (client) => {
+  if (statsSubscribed) {
+    return;
+  }
+  statsSubscribed = true;
+  client.onUpdate(topOverall, {}, (items) => {
+    if (!statsEnabled) {
+      return;
+    }
+    renderList("overall", items);
+  });
+
+  client.onUpdate(topByWeek, { week: "W1" }, (items) => {
+    if (!statsEnabled) {
+      return;
+    }
+    renderList("week1", items);
+  });
+
+  client.onUpdate(topByWeek, { week: "W2" }, (items) => {
+    if (!statsEnabled) {
+      return;
+    }
+    renderList("week2", items);
+  });
+};
+
 if (!convexUrl) {
   if (status) {
     status.textContent =
@@ -76,19 +135,15 @@ if (!convexUrl) {
         status.textContent =
           "Live stats are offline. Picks still work without the feed.";
       }
+      clearLists();
       return;
     }
 
-    client.onUpdate(topOverall, {}, (items) => {
-      renderList("overall", items);
-    });
-
-    client.onUpdate(topByWeek, { week: "W1" }, (items) => {
-      renderList("week1", items);
-    });
-
-    client.onUpdate(topByWeek, { week: "W2" }, (items) => {
-      renderList("week2", items);
+    client.onUpdate("featureFlags:getFeatureFlag", { key: statsFlagKey }, (isOn) => {
+      setStatsMode(isOn);
+      if (isOn) {
+        subscribeStats(client);
+      }
     });
   });
 }
