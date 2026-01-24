@@ -43,6 +43,7 @@ const easterEggImages = JSON.parse(
 )
   .map((image) => (typeof image === "string" ? image : image?.src))
   .filter(Boolean);
+const easterEggEmoji = document.body.dataset.easterEggEmoji || "🔥";
 let footerClickCount = 0;
 let footerClickTimer;
 let activeView = "stages";
@@ -712,10 +713,16 @@ const triggerEasterEgg = () => {
   }
 
   const bouncers = [];
-  easterEggImages.forEach((src) => {
+  const sources = easterEggImages.length ? easterEggImages : [null];
+  sources.forEach((src) => {
     const bouncer = document.createElement("div");
     bouncer.className = "easter-egg-bouncer";
-    bouncer.style.backgroundImage = `url(${src})`;
+    if (src) {
+      bouncer.style.backgroundImage = `url(${src})`;
+    } else {
+      bouncer.classList.add("emoji");
+      bouncer.textContent = easterEggEmoji;
+    }
     overlay.appendChild(bouncer);
     const speed = 280 + Math.random() * 220;
     const angle = Math.random() * Math.PI * 2;

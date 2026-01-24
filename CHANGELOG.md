@@ -11,6 +11,11 @@ The format is based on Keep a Changelog and adheres to Semantic Versioning.
 - Added Convex schema/functions and client-side scripts for stats tracking.
 - Made the repo public
 
+## [1.2.0]
+
+- Added onboarding docs and environment template for Convex and Astro.
+- Added GitHub source link in the footer.
+
 ## [0.1.0]
 
 - initial website release.

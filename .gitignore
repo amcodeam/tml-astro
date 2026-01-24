@@ -4,8 +4,6 @@ dist/
 .DS_Store
 .env
 .env.*
-hSj.png
-jSh.png
 *.log
 pnpm-debug.log*
 npm-debug.log*
