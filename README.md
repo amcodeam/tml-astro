@@ -48,4 +48,4 @@ npm run preview
 - `.env` is for public variables (like `PUBLIC_CONVEX_URL`).
 - `.env.local` is for local-only secrets (like `CONVEX_DEPLOYMENT`, `CONVEX_URL`).
 - Never commit real Convex deployment URLs or keys.
-- Add `hSj.png` and `jSh.png` to the repo root (these are personal images and should stay untracked).
+- Add `hSj.png` and `jSh.png` to the `picture` folder in the repo root (these are personal images and should stay untracked).
