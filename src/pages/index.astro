@@ -1,8 +1,6 @@
 ---
 import weekend1 from "../../weekend1.json";
 import weekend2 from "../../weekend2.json";
-import hSj from "../../picture/hSj.png";
-import jSh from "../../picture/jSh.png";
 import lineupScript from "../scripts/lineup.js?url";
 
 const buildWeekend = (data, name) => {
@@ -48,6 +46,12 @@ const defaultWeek = weekends[0];
 const defaultDay = defaultWeek.days[0];
 const formatDay = (festivalDay) =>
   `${festivalDay.day.slice(0, 3)} ${festivalDay.date.slice(8)} JUL`;
+const easterEggImages = Object.values(
+  import.meta.glob("../../picture/*.png", {
+    eager: true,
+    import: "default",
+  })
+);
 ---
 
 <!DOCTYPE html>
@@ -69,7 +73,8 @@ const formatDay = (festivalDay) =>
     ></script>
   </head>
   <body
-    data-easter-egg-images={JSON.stringify([hSj.src, jSh.src])}
+    data-easter-egg-images={JSON.stringify(easterEggImages)}
+    data-easter-egg-emoji="🔥"
     data-convex-url={import.meta.env.PUBLIC_CONVEX_URL}
   >
     <div class="page-glow"></div>
@@ -1065,6 +1070,14 @@ const formatDay = (festivalDay) =>
     background-repeat: no-repeat;
     border-radius: 10px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  .easter-egg-bouncer.emoji {
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
   }
 
   @keyframes confetti-fall {
