@@ -229,7 +229,8 @@ const easterEggImages = Object.values(
                                   : undefined
                               }
                             >
-                              {artist}
+                              <span>{artist}</span>
+                              <span>{"spotify"}</span>
                             </button>
                           ))}
                         </div>
@@ -803,6 +804,8 @@ const easterEggImages = Object.values(
     color: var(--text);
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
   }
 
   .artist:hover {
