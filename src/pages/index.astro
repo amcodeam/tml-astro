@@ -71,6 +71,7 @@ const easterEggImages = Object.values(
       src="https://um.ameercode.com/script.js"
       data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
     ></script>
+    <script src="https://kit.fontawesome.com/baf08c1187.js" crossorigin="anonymous"></script>
   </head>
   <body
     data-easter-egg-images={JSON.stringify(easterEggImages)}
@@ -230,7 +231,7 @@ const easterEggImages = Object.values(
                               }
                             >
                               <span>{artist}</span>
-                              <span>{"spotify"}</span>
+                              <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
                             </button>
                           ))}
                         </div>
@@ -258,7 +259,8 @@ const easterEggImages = Object.values(
                                   : undefined
                               }
                             >
-                              {artist}
+                              <span>{artist}</span>
+                              <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
                             </button>
                           ))}
                         </div>
