@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and adheres to Semantic Versioning.
 
+## [1.3.1]
+
+- Added a fix for realtime list not working.
+
 ## [1.3.0]
 
 - Unified shared header, schedule actions, and navigation transitions across pages.
