@@ -3,6 +3,7 @@ import { ViewTransitions } from "astro:transitions";
 import GlobalStyles from "./GlobalStyles.astro";
 import scheduleScript from "../scripts/schedule.js?url";
 import statsScript from "../scripts/stats.js?url";
+import navScript from "../scripts/nav.js?url";
 
 const { title, bodyAttrs = {} } = Astro.props;
 ---
@@ -65,5 +66,6 @@ const { title, bodyAttrs = {} } = Astro.props;
     </div>
     <script type="module" src={scheduleScript}></script>
     <script type="module" src={statsScript}></script>
+    <script type="module" src={navScript}></script>
   </body>
 </html>

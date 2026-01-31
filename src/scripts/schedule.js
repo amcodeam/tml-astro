@@ -265,10 +265,9 @@ const renderSchedulePanel = () => {
 };
 
 const updateSelected = () => {
-  const scheduleCount = document.getElementById("schedule-count");
-  if (scheduleCount) {
-    scheduleCount.textContent = String(selected.size);
-  }
+  document.querySelectorAll("[data-schedule-count]").forEach((count) => {
+    count.textContent = String(selected.size);
+  });
   saveSelections();
   renderSchedulePanel();
 };
@@ -353,7 +352,9 @@ const initScheduleUI = () => {
     });
   });
 
-  const openScheduleButton = document.getElementById("open-schedule");
+  const openScheduleButtons = document.querySelectorAll(
+    "#open-schedule, [data-open-schedule]"
+  );
   const schedulePanel = document.getElementById("schedule-panel");
   const scheduleContent = document.getElementById("schedule-content");
   const clearScheduleButton = document.getElementById("clear-schedule");
@@ -401,9 +402,11 @@ const initScheduleUI = () => {
     }, 1200);
   });
 
-  openScheduleButton?.addEventListener("click", () => {
-    schedulePanel?.classList.add("open");
-    schedulePanel?.setAttribute("aria-hidden", "false");
+  openScheduleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      schedulePanel?.classList.add("open");
+      schedulePanel?.setAttribute("aria-hidden", "false");
+    });
   });
 
   schedulePanel?.addEventListener("click", (event) => {

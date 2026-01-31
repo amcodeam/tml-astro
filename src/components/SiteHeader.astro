@@ -6,14 +6,14 @@ const { current = "lineup" } = Astro.props;
   <div class="brand">TML 26</div>
   <nav class="main-nav">
     {current === "lineup" ? (
-      <button class="pill ghost is-disabled" type="button" disabled>
+      <button class="pill ghost is-active is-disabled" type="button" disabled>
         Line-Up
       </button>
     ) : (
       <a class="pill ghost" href="/">Line-Up</a>
     )}
     {current === "stats" ? (
-      <button class="pill ghost is-disabled" type="button" disabled>
+      <button class="pill ghost is-active is-disabled" type="button" disabled>
         Stats
       </button>
     ) : (
@@ -50,7 +50,44 @@ const { current = "lineup" } = Astro.props;
         </svg>
       </span>
       My Schedule
-      <span class="count-badge" id="schedule-count">0</span>
+      <span class="count-badge" data-schedule-count>0</span>
     </button>
+  </div>
+  <button
+    class="nav-toggle"
+    type="button"
+    aria-label="Open menu"
+    aria-expanded="false"
+    data-nav-toggle
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-backdrop" data-nav-close aria-hidden="true"></div>
+  <div class="nav-drawer" data-nav-drawer aria-hidden="true">
+    <div class="nav-drawer-inner">
+      {current === "lineup" ? (
+        <button class="pill ghost is-active is-disabled" type="button" disabled>
+          Line-Up
+        </button>
+      ) : (
+        <a class="pill ghost" href="/" data-nav-link>Line-Up</a>
+      )}
+      {current === "stats" ? (
+        <button class="pill ghost is-active is-disabled" type="button" disabled>
+          Stats
+        </button>
+      ) : (
+        <a class="pill ghost" href="/stats" data-nav-link>Stats</a>
+      )}
+      <button class="pill ghost" data-share>
+        <span class="share-text">Share</span>
+      </button>
+      <button class="pill ghost" data-open-schedule>
+        My Schedule
+        <span class="count-badge" data-schedule-count>0</span>
+      </button>
+    </div>
   </div>
 </header>
