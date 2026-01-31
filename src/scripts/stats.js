@@ -13,6 +13,7 @@ let status = null;
 let loading = null;
 let downState = null;
 let statsEnabled = false;
+let initTimeout = null;
 
 const getConvexClient = () => {
   if (!convexUrl) {
@@ -156,6 +157,10 @@ const initStatsPage = () => {
 
   statsSubscribed = false;
   statsEnabled = false;
+  if (initTimeout) {
+    clearTimeout(initTimeout);
+    initTimeout = null;
+  }
   clearLists();
   if (downState) {
     downState.classList.add("hidden");
@@ -168,7 +173,19 @@ const initStatsPage = () => {
   }
   setLoading(true);
 
+  initTimeout = window.setTimeout(() => {
+    if (activeInitId !== initId) {
+      return;
+    }
+    setLoading(false);
+    setDownState(true, "Live stats are taking too long to respond. Try again soon.");
+  }, 8000);
+
   if (!convexUrl) {
+    if (initTimeout) {
+      clearTimeout(initTimeout);
+      initTimeout = null;
+    }
     setLoading(false);
     setDownState(
       true,
@@ -182,6 +199,10 @@ const initStatsPage = () => {
       return;
     }
     if (!client) {
+      if (initTimeout) {
+        clearTimeout(initTimeout);
+        initTimeout = null;
+      }
       setLoading(false);
       setDownState(true, "Live stats are offline. Picks still work without the feed.");
       clearLists();
@@ -191,6 +212,10 @@ const initStatsPage = () => {
     client.onUpdate("featureFlags:getFeatureFlag", { key: statsFlagKey }, (isOn) => {
       if (activeInitId !== initId) {
         return;
+      }
+      if (initTimeout) {
+        clearTimeout(initTimeout);
+        initTimeout = null;
       }
       setLoading(false);
       setStatsMode(isOn);
