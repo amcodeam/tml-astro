@@ -2,7 +2,6 @@
 import BaseLayout from "../components/BaseLayout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import statsScript from "../scripts/stats.js?url";
 
 const sections = [
   {
@@ -39,6 +38,71 @@ const bodyAttrs = {
         font-size: 13px;
         text-transform: uppercase;
         letter-spacing: 0.12em;
+      }
+
+      .stats-state {
+        display: grid;
+        gap: 20px;
+        justify-items: center;
+      }
+
+      .stats-loading,
+      .stats-down {
+        background: rgba(18, 6, 11, 0.9);
+        border-radius: 24px;
+        padding: 24px 28px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: center;
+        width: min(520px, 100%);
+      }
+
+      .stats-down h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+      }
+
+      .stats-down p {
+        margin: 0 0 16px;
+        color: var(--text-muted);
+      }
+
+      .stats-loading p {
+        margin: 12px 0 0;
+        color: var(--text-muted);
+      }
+
+      .loading-dots {
+        display: inline-flex;
+        gap: 8px;
+      }
+
+      .loading-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-bright);
+        box-shadow: 0 0 12px rgba(208, 65, 119, 0.4);
+        animation: pulse-dot 1.2s ease-in-out infinite;
+      }
+
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          transform: scale(0.7);
+          opacity: 0.45;
+        }
+        50% {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
 
       .stats-grid {
@@ -116,11 +180,7 @@ const bodyAttrs = {
     </style>
   </Fragment>
 
-  <SiteHeader>
-    <Fragment slot="actions">
-      <a class="pill ghost" href="/">Line-Up</a>
-    </Fragment>
-  </SiteHeader>
+  <SiteHeader current="stats" />
 
   <main>
     <HeroSection>
@@ -136,6 +196,22 @@ const bodyAttrs = {
         Live feed ready. Your picks update these lists instantly.
       </p>
     </HeroSection>
+
+    <section class="stats-state">
+      <div class="stats-loading" data-stats-loading>
+        <div class="loading-dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p>Loading live stats...</p>
+      </div>
+      <div class="stats-down hidden" data-stats-down>
+        <h2>Stats are down right now.</h2>
+        <p>Hang tight or head back to the line-up while we reconnect.</p>
+        <a class="pill primary" href="/">Back to Line-Up</a>
+      </div>
+    </section>
 
     <section class="stats-grid hidden" data-stats-grid>
       {sections.map((section) => (
@@ -153,5 +229,4 @@ const bodyAttrs = {
     </section>
   </main>
 
-  <script type="module" src={statsScript}></script>
 </BaseLayout>

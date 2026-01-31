@@ -1,17 +1,56 @@
 ---
-const hasNav = Astro.slots.has("nav");
+const { current = "lineup" } = Astro.props;
 ---
 
 <header class="site-header">
   <div class="brand">TML 26</div>
-  {hasNav ? (
-    <nav class="main-nav">
-      <slot name="nav" />
-    </nav>
-  ) : (
-    <nav class="main-nav" aria-hidden="true"></nav>
-  )}
+  <nav class="main-nav">
+    {current === "lineup" ? (
+      <button class="pill ghost is-disabled" type="button" disabled>
+        Line-Up
+      </button>
+    ) : (
+      <a class="pill ghost" href="/">Line-Up</a>
+    )}
+    {current === "stats" ? (
+      <button class="pill ghost is-disabled" type="button" disabled>
+        Stats
+      </button>
+    ) : (
+      <a class="pill ghost" href="/stats">Stats</a>
+    )}
+  </nav>
   <div class="header-actions">
-    <slot name="actions" />
+    <button class="pill ghost" data-share aria-label="Share schedule">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+      </span>
+      <span class="share-text">Share</span>
+    </button>
+    <button class="pill ghost" id="open-schedule">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 20s-7-4.35-7-9.2C5 8.4 6.9 6.5 9.3 6.5c1.5 0 2.9.8 3.7 2.1.8-1.3 2.2-2.1 3.7-2.1 2.4 0 4.3 1.9 4.3 4.3C21 15.65 12 20 12 20z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+      </span>
+      My Schedule
+      <span class="count-badge" id="schedule-count">0</span>
+    </button>
   </div>
 </header>

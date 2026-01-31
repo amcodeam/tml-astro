@@ -1,5 +1,8 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import GlobalStyles from "./GlobalStyles.astro";
+import scheduleScript from "../scripts/schedule.js?url";
+import statsScript from "../scripts/stats.js?url";
 
 const { title, bodyAttrs = {} } = Astro.props;
 ---
@@ -17,10 +20,50 @@ const { title, bodyAttrs = {} } = Astro.props;
       rel="stylesheet"
     />
     <slot name="head" />
+    <ViewTransitions />
     <GlobalStyles />
   </head>
   <body {...bodyAttrs}>
     <div class="page-glow"></div>
     <slot />
+    <div class="schedule-panel" id="schedule-panel" aria-hidden="true">
+      <div class="schedule-backdrop" data-close-panel></div>
+      <div class="schedule-sheet">
+        <header>
+          <div class="schedule-title">
+            <h3>My Schedule</h3>
+            <button class="pill danger" id="clear-schedule" type="button">
+              Clear all
+            </button>
+          </div>
+          <div class="schedule-actions">
+            <button class="pill ghost" data-share aria-label="Share schedule">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+              <span class="share-text">Share</span>
+            </button>
+            <button class="pill ghost" data-close-panel aria-label="Close">
+              ×
+            </button>
+          </div>
+        </header>
+        <div class="schedule-content" id="schedule-content">
+          <p class="empty">Select artists to build your schedule.</p>
+        </div>
+        <button class="pill primary" id="copy-schedule">Copy Schedule</button>
+      </div>
+    </div>
+    <script type="module" src={scheduleScript}></script>
+    <script type="module" src={statsScript}></script>
   </body>
 </html>
