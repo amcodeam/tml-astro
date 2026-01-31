@@ -1,0 +1,17 @@
+---
+const hasNav = Astro.slots.has("nav");
+---
+
+<header class="site-header">
+  <div class="brand">TML 26</div>
+  {hasNav ? (
+    <nav class="main-nav">
+      <slot name="nav" />
+    </nav>
+  ) : (
+    <nav class="main-nav" aria-hidden="true"></nav>
+  )}
+  <div class="header-actions">
+    <slot name="actions" />
+  </div>
+</header>

@@ -1,0 +1,14 @@
+---
+const hasTop = Astro.slots.has("top");
+---
+
+<section class="hero">
+  <div class="hero-card">
+    {hasTop && (
+      <div class="hero-top">
+        <slot name="top" />
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

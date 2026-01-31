@@ -1,0 +1,176 @@
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --bg: #15070d;
+    --bg-soft: #1f0b14;
+    --panel: #281019;
+    --panel-light: #f6f1f3;
+    --accent: #a32351;
+    --accent-bright: #d04177;
+    --danger: #d24b58;
+    --danger-bright: #f06d6a;
+    --text: #f7eef2;
+    --text-muted: #c9b2be;
+    --pill-border: rgba(255, 255, 255, 0.12);
+    font-family: "Manrope", sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, rgba(185, 64, 107, 0.2), transparent 50%),
+      linear-gradient(180deg, #11050b, #1a0a12 45%, #14060c);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .page-glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(120, 36, 63, 0.4), transparent 60%),
+      radial-gradient(circle at 70% 30%, rgba(67, 18, 37, 0.35), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10, 4, 7, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .brand {
+    font-family: "DM Serif Display", serif;
+    letter-spacing: 0.2em;
+    font-size: 18px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .main-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .hero {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-card {
+    width: min(900px, 100%);
+    background: rgba(28, 8, 15, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 36px;
+    padding: 32px 40px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    text-align: center;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-card h1 {
+    font-family: "DM Serif Display", serif;
+    font-size: clamp(32px, 4vw, 48px);
+    margin: 0 0 12px;
+  }
+
+  .hero-card p {
+    margin: 0 auto 16px;
+    max-width: 560px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .pill {
+    border: 1px solid var(--pill-border);
+    background: transparent;
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .pill .icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill .icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pill.ghost {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 960px) {
+    .site-header {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    main {
+      padding: 20px 24px 60px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-card {
+      padding: 24px;
+    }
+
+    .site-header {
+      padding: 16px 20px;
+    }
+  }
+</style>
