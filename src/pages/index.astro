@@ -8,6 +8,7 @@ import lineupScript from "../scripts/lineup.js?url";
 
 const buildWeekend = (data, name) => {
   const byDate = new Map();
+  const spotifyLinks = new Map();
 
   data.performances.forEach((performance) => {
     const dateKey = performance.date;
@@ -44,6 +45,28 @@ const buildWeekend = (data, name) => {
   };
 };
 
+const buildSpotify = (data) => {
+  const spotifyLinks = new Map();
+
+  data.performances.forEach((performance) => {
+    if (performance.name.includes("b2b")) {
+      const artistsB2B = performance.name.split("b2b").map(i => i.trim());
+      if (!spotifyLinks.has(artistsB2B[0]) && performance.artists[0].spotify) {
+        spotifyLinks.set(artistsB2B[0], performance.artists[0].spotify);
+      }
+      if (!spotifyLinks.has(artistsB2B[1]) && performance.artists[1] && performance.artists[1].spotify) {
+        spotifyLinks.set(artistsB2B[1], performance.artists[1].spotify);
+      }
+    } else {
+      if (!spotifyLinks.has(performance.name) && performance.artists[0].spotify) {
+        spotifyLinks.set(performance.name, performance.artists[0].spotify);
+      }
+    }
+  });
+
+  return spotifyLinks;
+};
+
 const weekends = [buildWeekend(weekend1, "W1"), buildWeekend(weekend2, "W2")];
 const defaultWeek = weekends[0];
 const defaultDay = defaultWeek.days[0];
@@ -60,6 +83,7 @@ const bodyAttrs = {
   "data-easter-egg-emoji": "🔥",
   "data-convex-url": import.meta.env.PUBLIC_CONVEX_URL,
 };
+const spotifyLinks = new Map([...buildSpotify(weekend1), ...buildSpotify(weekend2)]);
 ---
 
 <BaseLayout title="Tomorrowland Line-Up Selector" bodyAttrs={bodyAttrs}>
@@ -601,7 +625,9 @@ const bodyAttrs = {
                             }
                           >
                             <span>{artist}</span>
-                            <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                            {spotifyLinks.get(artist) && (
+                              <span><a href={spotifyLinks.get(artist)}><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                            )}
                           </button>
                         ))}
                       </div>
@@ -630,7 +656,9 @@ const bodyAttrs = {
                             }
                           >
                             <span>{artist}</span>
-                            <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                            {spotifyLinks.get(artist) && (
+                              <span><a href={spotifyLinks.get(artist)}><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                            )}
                           </button>
                         ))}
                       </div>
