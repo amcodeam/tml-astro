@@ -1,0 +1,71 @@
+---
+const { current = "lineup" } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="brand">TML 26</div>
+  <nav class="main-nav">
+    {current === "lineup" ? (
+      <button class="pill ghost is-active is-disabled" type="button" disabled>
+        Line-Up
+      </button>
+    ) : (
+      <a class="pill ghost" href="/">Line-Up</a>
+    )}
+    {current === "stats" ? (
+      <button class="pill ghost is-active is-disabled" type="button" disabled>
+        Stats
+      </button>
+    ) : (
+      <a class="pill ghost" href="/stats">Stats</a>
+    )}
+  </nav>
+  <div class="header-actions">
+    <button class="pill ghost" id="open-schedule">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 20s-7-4.35-7-9.2C5 8.4 6.9 6.5 9.3 6.5c1.5 0 2.9.8 3.7 2.1.8-1.3 2.2-2.1 3.7-2.1 2.4 0 4.3 1.9 4.3 4.3C21 15.65 12 20 12 20z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+      </span>
+      My Schedule
+      <span class="count-badge" data-schedule-count>0</span>
+    </button>
+  </div>
+  <button
+    class="nav-toggle"
+    type="button"
+    aria-label="Open menu"
+    aria-expanded="false"
+    data-nav-toggle
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-backdrop" data-nav-close aria-hidden="true"></div>
+  <div class="nav-drawer" data-nav-drawer aria-hidden="true">
+    <div class="nav-drawer-inner">
+      {current === "lineup" ? (
+        <button class="pill ghost is-active is-disabled" type="button" disabled>
+          Line-Up
+        </button>
+      ) : (
+        <a class="pill ghost" href="/" data-nav-link>Line-Up</a>
+      )}
+      {current === "stats" ? (
+        <button class="pill ghost is-active is-disabled" type="button" disabled>
+          Stats
+        </button>
+      ) : (
+        <a class="pill ghost" href="/stats" data-nav-link>Stats</a>
+      )}
+    </div>
+  </div>
+</header>

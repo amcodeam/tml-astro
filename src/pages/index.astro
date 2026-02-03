@@ -1,6 +1,9 @@
 ---
 import weekend1 from "../../weekend1.json";
 import weekend2 from "../../weekend2.json";
+import BaseLayout from "../components/BaseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import lineupScript from "../scripts/lineup.js?url";
 
 const buildWeekend = (data, name) => {
@@ -52,1099 +55,676 @@ const easterEggImages = Object.values(
     import: "default",
   })
 );
+const bodyAttrs = {
+  "data-easter-egg-images": JSON.stringify(easterEggImages),
+  "data-easter-egg-emoji": "🔥",
+  "data-convex-url": import.meta.env.PUBLIC_CONVEX_URL,
+};
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tomorrowland Line-Up Selector</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+<BaseLayout title="Tomorrowland Line-Up Selector" bodyAttrs={bodyAttrs}>
+  <Fragment slot="head">
     <script
       defer
       src="https://um.ameercode.com/script.js"
       data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
     ></script>
     <script src="https://kit.fontawesome.com/baf08c1187.js" crossorigin="anonymous"></script>
-  </head>
-  <body
-    data-easter-egg-images={JSON.stringify(easterEggImages)}
-    data-easter-egg-emoji="🔥"
-    data-convex-url={import.meta.env.PUBLIC_CONVEX_URL}
-  >
-    <div class="page-glow"></div>
-    <header class="site-header">
-      <div class="brand">TML 26</div>
-      <nav class="main-nav" aria-hidden="true"></nav>
-      <div class="header-actions">
-        <a class="pill ghost hidden" href="/stats" data-stats-link>Stats</a>
-        <button class="pill ghost" data-share aria-label="Share schedule">
-          <span class="icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"
-              />
-            </svg>
-          </span>
-          <span class="share-text">Share</span>
+    <style is:global>
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+        padding: 20px 32px 60px;
+      }
+
+      .hero {
+        grid-column: 1 / -1;
+      }
+
+      .hero-tag.ghost {
+        color: var(--text-muted);
+      }
+
+      .hero-card p {
+        margin: 0 auto 24px;
+      }
+
+      .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .hero-actions.secondary {
+        margin-bottom: 0;
+      }
+
+      .hero-actions.secondary + .hero-actions.secondary {
+        margin-top: 10px;
+      }
+
+      .pill.active,
+      .pill.primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+        border-color: transparent;
+        color: #fff;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .section-header h2 {
+        margin: 0 0 6px;
+        font-size: 24px;
+      }
+
+      .section-header p {
+        margin: 0;
+        color: var(--text-muted);
+      }
+
+      .search input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        padding: 12px 16px;
+        border-radius: 999px;
+        min-width: 220px;
+        font-size: 16px;
+        height: 48px;
+      }
+
+      .search {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-clear {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        font-size: 18px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        display: none;
+      }
+
+      .search-clear.visible {
+        opacity: 0.9;
+        pointer-events: auto;
+      }
+
+      @media (max-width: 720px) {
+        .search-clear {
+          display: inline-flex;
+        }
+      }
+
+      .featured-grid {
+        column-width: 280px;
+        column-gap: 16px;
+        width: min(100%, 1168px);
+        margin: 0 auto;
+      }
+
+      .lineup-grid {
+        column-width: 280px;
+        column-gap: 16px;
+        width: min(100%, 1168px);
+        margin: 0 auto;
+      }
+
+      .artist-list {
+        column-width: 280px;
+        column-gap: 16px;
+        width: min(100%, 1168px);
+        margin: 0 auto;
+      }
+
+      .search-results {
+        column-width: 280px;
+        column-gap: 16px;
+        width: min(100%, 1168px);
+        margin: 0 auto;
+      }
+
+      .search-card {
+        background: rgba(18, 6, 11, 0.9);
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        break-inside: avoid;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
+      @media (min-width: 961px) {
+        .search-results {
+          column-count: 1;
+          column-width: auto;
+        }
+
+        .search-card {
+          width: 100%;
+        }
+      }
+
+      .search-card h4 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      .search-card .meta {
+        margin: 0 0 4px;
+        color: var(--text-muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .artist-tile {
+        background: rgba(18, 6, 11, 0.9);
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        break-inside: avoid;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
+      .artist-tile h4 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      .artist-tile p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stage-card {
+        background: rgba(18, 6, 11, 0.9);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        break-inside: avoid;
+        margin-bottom: 16px;
+      }
+
+      .stage-card header {
+        padding: 16px;
+        font-weight: 600;
+        background: linear-gradient(
+          135deg,
+          rgba(152, 34, 77, 0.9),
+          rgba(98, 18, 44, 0.9)
+        );
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 13px;
+      }
+
+      .stage-body {
+        padding: 18px 16px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .artist {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 8px 12px;
+        text-align: left;
+        font-size: 13px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .artist:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateX(4px);
+      }
+
+      .artist.selected {
+        background: rgba(208, 65, 119, 0.2);
+        border-color: rgba(208, 65, 119, 0.6);
+        color: #fff;
+      }
+
+      .selection {
+        position: sticky;
+        top: 110px;
+        height: fit-content;
+      }
+
+      .selection-card {
+        background: rgba(22, 7, 13, 0.9);
+        border-radius: 24px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .selection-card h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .count {
+        margin: 0;
+        color: var(--text-muted);
+      }
+
+      .artist.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .site-footer {
+        padding: 24px 48px 40px;
+        color: var(--text-muted);
+        text-align: center;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #footer-message {
+        cursor: pointer;
+      }
+
+      .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        transition: color 0.2s ease;
+      }
+
+      .footer-link:hover {
+        color: var(--text);
+      }
+
+      .footer-link .icon {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .footer-link .icon svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .easter-egg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 40;
+        overflow: hidden;
+      }
+
+      .confetti-piece {
+        position: absolute;
+        top: -10vh;
+        left: var(--x);
+        width: 6px;
+        height: 12px;
+        background: var(--confetti-color);
+        opacity: 0.85;
+        border-radius: 2px;
+        transform: rotate(var(--rotate));
+        animation: confetti-fall var(--duration) linear var(--delay) infinite;
+      }
+
+      .easter-egg-bouncer {
+        position: absolute;
+        width: 144px;
+        height: 144px;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+      }
+
+      .easter-egg-bouncer.emoji {
+        background: rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 64px;
+      }
+
+      .fa-spotify {
+        color: white;
+      }
+
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(-10vh) rotate(0deg);
+        }
+        100% {
+          transform: translateY(110vh) rotate(360deg);
+        }
+      }
+
+      @media (max-width: 960px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .selection {
+          position: static;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .main-nav {
+          gap: 12px;
+        }
+
+        .main-nav a {
+          font-size: 10px;
+        }
+      }
+    </style>
+  </Fragment>
+
+  <SiteHeader current="lineup" />
+
+  <main>
+    <HeroSection>
+      <Fragment slot="top">
+        <span class="hero-tag">Not made by tml</span>
+        <span class="hero-tag ghost" id="day-label">
+          {defaultDay.day} - {defaultDay.date}
+        </span>
+      </Fragment>
+      <h1>Pick the DJs you want to see.</h1>
+      <p>
+        Build your personal timetable by selecting artists across every stage.
+        Your picks update live as you browse the line-up.
+      </p>
+      <div class="hero-actions">
+        <button class="pill active" data-view-button data-view="stages">
+          Stages
         </button>
-        <button class="pill ghost" id="open-schedule">
-          <span class="icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 20s-7-4.35-7-9.2C5 8.4 6.9 6.5 9.3 6.5c1.5 0 2.9.8 3.7 2.1.8-1.3 2.2-2.1 3.7-2.1 2.4 0 4.3 1.9 4.3 4.3C21 15.65 12 20 12 20z"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"
-              />
-            </svg>
-          </span>
-          My Schedule
-          <span class="count-badge" id="schedule-count">0</span>
-        </button>
+        <button class="pill" data-view-button data-view="artists">Artists</button>
       </div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="hero-card">
-          <div class="hero-top">
-            <span class="hero-tag">Not made by tml</span>
-            <span class="hero-tag ghost" id="day-label">
-              {defaultDay.day} - {defaultDay.date}
-            </span>
-          </div>
-          <h1>Pick the DJs you want to see.</h1>
-          <p>
-            Build your personal timetable by selecting artists across every stage.
-            Your picks update live as you browse the line-up.
-          </p>
-          <div class="hero-actions">
-            <button class="pill active" data-view-button data-view="stages">
-              Stages
+      <div class="hero-actions secondary">
+        {weekends.map((festivalWeek) => (
+          <button
+            class={`pill ${festivalWeek.name === defaultWeek.name ? "active" : ""}`}
+            data-week-button
+            data-week={festivalWeek.name}
+          >
+            {festivalWeek.name === "W1" ? "Week 1" : "Week 2"}
+          </button>
+        ))}
+      </div>
+      <div class="hero-actions secondary" id="day-buttons">
+        {weekends.map((festivalWeek) =>
+          festivalWeek.days.map((festivalDay) => (
+            <button
+              class={`pill ${festivalDay.date === defaultDay.date ? "active" : ""}`}
+              data-day-button
+              data-week={festivalWeek.name}
+              data-day={festivalDay.date}
+            >
+              {formatDay(festivalDay)}
             </button>
-            <button class="pill" data-view-button data-view="artists">
-              Artists
-            </button>
-          </div>
-          <div class="hero-actions secondary">
-            {weekends.map((festivalWeek) => (
-              <button
-                class={`pill ${festivalWeek.name === defaultWeek.name ? "active" : ""}`}
-                data-week-button
-                data-week={festivalWeek.name}
-              >
-                {festivalWeek.name === "W1" ? "Week 1" : "Week 2"}
-              </button>
-            ))}
-          </div>
-          <div class="hero-actions secondary" id="day-buttons">
-            {weekends.map((festivalWeek) =>
-              festivalWeek.days.map((festivalDay) => (
-                <button
-                  class={`pill ${festivalDay.date === defaultDay.date ? "active" : ""}`}
-                  data-day-button
-                  data-week={festivalWeek.name}
-                  data-day={festivalDay.date}
-                >
-                  {formatDay(festivalDay)}
-                </button>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
+          ))
+        )}
+      </div>
+    </HeroSection>
 
-      {weekends.map((festivalWeek) =>
-        festivalWeek.days.map((festivalDay) => {
-          const stages = festivalDay.stages;
-          const featuredStages = stages.slice(0, 4);
-          const remainingStages = stages.slice(4);
-          const artists = stages
-            .flatMap((stage) =>
-              stage.artists.map((artist) => ({
-                artist,
-                stage: stage.name,
-              }))
-            )
-            .sort((a, b) => a.artist.localeCompare(b.artist));
+    {weekends.map((festivalWeek) =>
+      festivalWeek.days.map((festivalDay) => {
+        const stages = festivalDay.stages;
+        const featuredStages = stages.slice(0, 4);
+        const remainingStages = stages.slice(4);
+        const artists = stages
+          .flatMap((stage) =>
+            stage.artists.map((artist) => ({
+              artist,
+              stage: stage.name,
+            }))
+          )
+          .sort((a, b) => a.artist.localeCompare(b.artist));
 
-          return (
-            <>
-              <section
-                class={`content ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
-                data-view-section="stages"
-                data-week={festivalWeek.name}
-                data-day={festivalDay.date}
-              >
-                <div class="section-header">
-                  <div>
-                    <h2>{festivalDay.day} Stage Highlights</h2>
-                    <p>Click any artist to add them to your schedule.</p>
-                  </div>
-                  <div class="search">
-                    <input
-                      data-stage-search
-                      type="search"
-                      placeholder="Search artists"
-                    />
-                    <button class="search-clear" type="button" aria-label="Clear search">
-                      ×
-                    </button>
-                  </div>
+        return (
+          <>
+            <section
+              class={`content ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
+              data-view-section="stages"
+              data-week={festivalWeek.name}
+              data-day={festivalDay.date}
+            >
+              <div class="section-header">
+                <div>
+                  <h2>{festivalDay.day} Stage Highlights</h2>
+                  <p>Click any artist to add them to your schedule.</p>
+                </div>
+                <div class="search">
+                  <input
+                    data-stage-search
+                    type="search"
+                    placeholder="Search artists"
+                  />
+                  <button class="search-clear" type="button" aria-label="Clear search">
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <div class="search-results hidden" data-search-results></div>
+
+              <div class="stage-content" data-stage-content>
+                <div class="featured-grid">
+                  {featuredStages.map((stage) => (
+                    <article class="stage-card" data-stage={stage.name}>
+                      <header>{stage.name}</header>
+                      <div class="stage-body">
+                        {stage.artists.map((artist) => (
+                          <button
+                            class="artist"
+                            type="button"
+                            data-artist={artist}
+                            data-stage={stage.name}
+                            data-week={festivalWeek.name}
+                            data-day={festivalDay.date}
+                            data-day-name={festivalDay.day}
+                            data-disabled={
+                              artist.toLowerCase() === "to be announced"
+                                ? "true"
+                                : undefined
+                            }
+                          >
+                            <span>{artist}</span>
+                            <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
                 </div>
 
-                <div class="search-results hidden" data-search-results></div>
-
-                <div class="stage-content" data-stage-content>
-                  <div class="featured-grid">
-                    {featuredStages.map((stage) => (
-                      <article class="stage-card" data-stage={stage.name}>
-                        <header>{stage.name}</header>
-                        <div class="stage-body">
-                          {stage.artists.map((artist) => (
-                            <button
-                              class="artist"
-                              type="button"
-                              data-artist={artist}
-                              data-stage={stage.name}
-                              data-week={festivalWeek.name}
-                              data-day={festivalDay.date}
-                              data-day-name={festivalDay.day}
-                              data-disabled={
-                                artist.toLowerCase() === "to be announced"
-                                  ? "true"
-                                  : undefined
-                              }
-                            >
-                              <span>{artist}</span>
-                              <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
-                            </button>
-                          ))}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-
-                  <div class="lineup-grid">
-                    {remainingStages.map((stage) => (
-                      <article class="stage-card" data-stage={stage.name}>
-                        <header>{stage.name}</header>
-                        <div class="stage-body">
-                          {stage.artists.map((artist) => (
-                            <button
-                              class="artist"
-                              type="button"
-                              data-artist={artist}
-                              data-stage={stage.name}
-                              data-week={festivalWeek.name}
-                              data-day={festivalDay.date}
-                              data-day-name={festivalDay.day}
-                              data-disabled={
-                                artist.toLowerCase() === "to be announced"
-                                  ? "true"
-                                  : undefined
-                              }
-                            >
-                              <span>{artist}</span>
-                              <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
-                            </button>
-                          ))}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
+                <div class="lineup-grid">
+                  {remainingStages.map((stage) => (
+                    <article class="stage-card" data-stage={stage.name}>
+                      <header>{stage.name}</header>
+                      <div class="stage-body">
+                        {stage.artists.map((artist) => (
+                          <button
+                            class="artist"
+                            type="button"
+                            data-artist={artist}
+                            data-stage={stage.name}
+                            data-week={festivalWeek.name}
+                            data-day={festivalDay.date}
+                            data-day-name={festivalDay.day}
+                            data-disabled={
+                              artist.toLowerCase() === "to be announced"
+                                ? "true"
+                                : undefined
+                            }
+                          >
+                            <span>{artist}</span>
+                            <span><a href="www.spotify.com"><i class="fa-brands fa-spotify fa-lg"></i></a></span>
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
                 </div>
-              </section>
+              </div>
+            </section>
 
-              <section
-                class={`content hidden ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
-                data-view-section="artists"
-                data-week={festivalWeek.name}
-                data-day={festivalDay.date}
-              >
-                <div class="section-header">
-                  <div>
-                    <h2>{festivalDay.day} Artists</h2>
-                    <p>Browse every artist across all stages.</p>
-                  </div>
-                  <div class="search">
-                    <input
-                      data-artist-search
-                      type="search"
-                      placeholder="Search artists"
-                    />
-                    <button class="search-clear" type="button" aria-label="Clear search">
-                      ×
-                    </button>
-                  </div>
+            <section
+              class={`content hidden ${festivalDay.date === defaultDay.date ? "" : "hidden"}`}
+              data-view-section="artists"
+              data-week={festivalWeek.name}
+              data-day={festivalDay.date}
+            >
+              <div class="section-header">
+                <div>
+                  <h2>{festivalDay.day} Artists</h2>
+                  <p>Browse every artist across all stages.</p>
                 </div>
+                <div class="search">
+                  <input
+                    data-artist-search
+                    type="search"
+                    placeholder="Search artists"
+                  />
+                  <button class="search-clear" type="button" aria-label="Clear search">
+                    ×
+                  </button>
+                </div>
+              </div>
 
-                <div class="search-results hidden" data-search-results></div>
+              <div class="search-results hidden" data-search-results></div>
 
-                <div class="artist-content" data-artist-content>
-                  <div class="artist-list">
-                    {artists.map((item) => (
-                      <article
-                        class="artist-tile"
+              <div class="artist-content" data-artist-content>
+                <div class="artist-list">
+                  {artists.map((item) => (
+                    <article
+                      class="artist-tile"
+                      data-artist={item.artist}
+                      data-stage={item.stage}
+                    >
+                      <div>
+                        <h4>{item.artist}</h4>
+                        <p>{item.stage}</p>
+                      </div>
+                      <button
+                        class="artist"
+                        type="button"
                         data-artist={item.artist}
                         data-stage={item.stage}
+                        data-week={festivalWeek.name}
+                        data-day={festivalDay.date}
+                        data-day-name={festivalDay.day}
+                        data-disabled={
+                          item.artist.toLowerCase() === "to be announced"
+                            ? "true"
+                            : undefined
+                        }
                       >
-                        <div>
-                          <h4>{item.artist}</h4>
-                          <p>{item.stage}</p>
-                        </div>
-                        <button
-                          class="artist"
-                          type="button"
-                          data-artist={item.artist}
-                          data-stage={item.stage}
-                          data-week={festivalWeek.name}
-                          data-day={festivalDay.date}
-                          data-day-name={festivalDay.day}
-                          data-disabled={
-                            item.artist.toLowerCase() === "to be announced"
-                              ? "true"
-                              : undefined
-                          }
-                        >
-                          Select
-                        </button>
-                      </article>
-                    ))}
-                  </div>
+                        Select
+                      </button>
+                    </article>
+                  ))}
                 </div>
-              </section>
-            </>
-          );
-        })
-      )}
-
-      <aside class="selection"></aside>
-    </main>
-
-    <div class="schedule-panel" id="schedule-panel" aria-hidden="true">
-      <div class="schedule-backdrop" data-close-panel></div>
-      <div class="schedule-sheet">
-        <header>
-          <div class="schedule-title">
-            <h3>My Schedule</h3>
-            <button class="pill danger" id="clear-schedule" type="button">
-              Clear all
-            </button>
-          </div>
-          <div class="schedule-actions">
-            <button class="pill ghost" data-share aria-label="Share schedule">
-              <span class="icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M16.5 6.5 12 2l-4.5 4.5M12 2v14m-7 4h14"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    fill="none"
-                  />
-                </svg>
-              </span>
-              <span class="share-text">Share</span>
-            </button>
-            <button class="pill ghost" data-close-panel aria-label="Close">
-              ×
-            </button>
-          </div>
-        </header>
-        <div class="schedule-content" id="schedule-content">
-          <p class="empty">Select artists to build your schedule.</p>
-        </div>
-        <button class="pill primary" id="copy-schedule">Copy Schedule</button>
-      </div>
-    </div>
-
-    <footer class="site-footer">
-      <p id="footer-message">Just for fun, will delete later - Amir 🔥</p>
-      <a
-        class="footer-link"
-        href="https://github.com/amcodeam/tml-astro"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <span class="icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M12 2C6.48 2 2 6.58 2 12.26c0 4.56 2.87 8.42 6.84 9.78.5.1.68-.23.68-.5 0-.24-.01-.9-.01-1.76-2.78.63-3.37-1.38-3.37-1.38-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.08 1.54 1.08.9 1.6 2.36 1.13 2.94.86.09-.66.35-1.13.64-1.39-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.03-2.78-.1-.26-.45-1.3.1-2.72 0 0 .85-.28 2.79 1.06.81-.23 1.67-.35 2.53-.35.86 0 1.72.12 2.53.35 1.94-1.34 2.79-1.06 2.79-1.06.55 1.42.2 2.46.1 2.72.64.73 1.03 1.65 1.03 2.78 0 3.96-2.35 4.83-4.59 5.09.36.33.69.97.69 1.96 0 1.42-.01 2.56-.01 2.91 0 .27.18.6.69.5 3.97-1.36 6.84-5.22 6.84-9.78C22 6.58 17.52 2 12 2z"
-            />
-          </svg>
-        </span>
-        <span>Source code on GitHub</span>
-      </a>
-    </footer>
-
-    <script type="module" src={lineupScript}></script>
-  </body>
-</html>
-
-<style is:global>
-  :root {
-    color-scheme: dark;
-    --bg: #15070d;
-    --bg-soft: #1f0b14;
-    --panel: #281019;
-    --panel-light: #f6f1f3;
-    --accent: #a32351;
-    --accent-bright: #d04177;
-    --danger: #d24b58;
-    --danger-bright: #f06d6a;
-    --text: #f7eef2;
-    --text-muted: #c9b2be;
-    --pill-border: rgba(255, 255, 255, 0.12);
-    font-family: "Manrope", sans-serif;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    background: radial-gradient(circle at top, rgba(185, 64, 107, 0.2), transparent 50%),
-      linear-gradient(180deg, #11050b, #1a0a12 45%, #14060c);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  .page-glow {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at 20% 20%, rgba(120, 36, 63, 0.4), transparent 60%),
-      radial-gradient(circle at 70% 30%, rgba(67, 18, 37, 0.35), transparent 55%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .site-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 48px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(10, 4, 7, 0.85);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .brand {
-    font-family: "DM Serif Display", serif;
-    letter-spacing: 0.2em;
-    font-size: 18px;
-  }
-
-  .main-nav {
-    display: none;
-  }
-
-  .main-nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 12px;
-  }
-
-  main {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-    padding: 20px 32px 60px;
-  }
-
-  .hero {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-card {
-    width: min(900px, 100%);
-    background: rgba(28, 8, 15, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 36px;
-    padding: 32px 40px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-    text-align: center;
-  }
-
-  .hero-top {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .hero-tag {
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 999px;
-    padding: 8px 16px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-  }
-
-  .hero-tag.ghost {
-    color: var(--text-muted);
-  }
-
-  .hero-card h1 {
-    font-family: "DM Serif Display", serif;
-    font-size: clamp(32px, 4vw, 48px);
-    margin: 0 0 12px;
-  }
-
-  .hero-card p {
-    margin: 0 auto 24px;
-    max-width: 560px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
-  .hero-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-
-  .hero-actions.secondary {
-    margin-bottom: 0;
-  }
-
-  .hero-actions.secondary + .hero-actions.secondary {
-    margin-top: 10px;
-  }
-
-  .pill {
-    border: 1px solid var(--pill-border);
-    background: transparent;
-    color: var(--text);
-    padding: 10px 20px;
-    border-radius: 999px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-  }
-
-  .pill .icon {
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pill .icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .count-badge {
-    margin-left: 10px;
-    background: rgba(208, 65, 119, 0.25);
-    border: 1px solid rgba(208, 65, 119, 0.5);
-    border-radius: 999px;
-    padding: 4px 8px;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-  }
-
-  .pill.active,
-  .pill.primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
-    border-color: transparent;
-    color: #fff;
-  }
-
-  .pill.danger {
-    background: transparent;
-    border-color: rgba(210, 75, 88, 0.5);
-    color: #f2a1a6;
-    opacity: 0.75;
-  }
-
-  .pill.danger:hover {
-    opacity: 0.9;
-  }
-
-  .pill.ghost {
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .section-header h2 {
-    margin: 0 0 6px;
-    font-size: 24px;
-  }
-
-  .section-header p {
-    margin: 0;
-    color: var(--text-muted);
-  }
-
-  .search input {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--text);
-    padding: 12px 16px;
-    border-radius: 999px;
-    min-width: 220px;
-    font-size: 16px;
-    height: 48px;
-  }
-
-  .search {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .search-clear {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--text);
-    font-size: 18px;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    display: none;
-  }
-
-  .search-clear.visible {
-    opacity: 0.9;
-    pointer-events: auto;
-  }
-
-  @media (max-width: 720px) {
-    .search-clear {
-      display: inline-flex;
-    }
-  }
-
-  .featured-grid {
-    column-width: 280px;
-    column-gap: 16px;
-    width: min(100%, 1168px);
-    margin: 0 auto;
-  }
-
-  .lineup-grid {
-    column-width: 280px;
-    column-gap: 16px;
-    width: min(100%, 1168px);
-    margin: 0 auto;
-  }
-
-  .artist-list {
-    column-width: 280px;
-    column-gap: 16px;
-    width: min(100%, 1168px);
-    margin: 0 auto;
-  }
-
-  .search-results {
-    column-width: 280px;
-    column-gap: 16px;
-    width: min(100%, 1168px);
-    margin: 0 auto;
-  }
-
-  .search-card {
-    background: rgba(18, 6, 11, 0.9);
-    border-radius: 18px;
-    padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    break-inside: avoid;
-    margin-bottom: 16px;
-    width: 100%;
-  }
-
-  @media (min-width: 961px) {
-    .search-results {
-      column-count: 1;
-      column-width: auto;
-    }
-
-    .search-card {
-      width: 100%;
-    }
-  }
-
-  .search-card h4 {
-    margin: 0 0 6px;
-    font-size: 16px;
-  }
-
-  .search-card .meta {
-    margin: 0 0 4px;
-    color: var(--text-muted);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .artist-tile {
-    background: rgba(18, 6, 11, 0.9);
-    border-radius: 18px;
-    padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    break-inside: avoid;
-    margin-bottom: 16px;
-    width: 100%;
-  }
-
-  .artist-tile h4 {
-    margin: 0 0 6px;
-    font-size: 16px;
-  }
-
-  .artist-tile p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .stage-card {
-    background: rgba(18, 6, 11, 0.9);
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    break-inside: avoid;
-    margin-bottom: 16px;
-  }
-
-  .stage-card header {
-    padding: 16px;
-    font-weight: 600;
-    background: linear-gradient(135deg, rgba(152, 34, 77, 0.9), rgba(98, 18, 44, 0.9));
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 13px;
-  }
-
-  .stage-body {
-    padding: 18px 16px 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .artist {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 8px 12px;
-    text-align: left;
-    font-size: 13px;
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .artist:hover {
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateX(4px);
-  }
-
-  .artist.selected {
-    background: rgba(208, 65, 119, 0.2);
-    border-color: rgba(208, 65, 119, 0.6);
-    color: #fff;
-  }
-
-  .selection {
-    position: sticky;
-    top: 110px;
-    height: fit-content;
-  }
-
-  .selection-card {
-    background: rgba(22, 7, 13, 0.9);
-    border-radius: 24px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .selection-card h3 {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  .count {
-    margin: 0;
-    color: var(--text-muted);
-  }
-
-  .artist.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .schedule-panel {
-    position: fixed;
-    inset: 0;
-    display: none;
-    z-index: 20;
-  }
-
-  .schedule-panel.open {
-    display: block;
-  }
-
-  .schedule-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(6, 3, 6, 0.7);
-    backdrop-filter: blur(6px);
-  }
-
-  .schedule-sheet {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: min(520px, 100%);
-    background: rgba(18, 6, 11, 0.98);
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .schedule-sheet header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .schedule-title {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .schedule-title .pill {
-    align-self: flex-start;
-    padding: 8px 16px;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-  }
-
-  .schedule-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .schedule-sheet h3 {
-    margin: 0;
-    font-size: 22px;
-  }
-
-  .schedule-content {
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .schedule-block {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .schedule-block h4 {
-    margin: 0;
-    font-size: 18px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .schedule-day {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .schedule-day h5 {
-    margin: 0;
-    font-size: 14px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-  }
-
-  .schedule-card {
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
-    padding: 12px 14px;
-  }
-
-  .schedule-card h6 {
-    margin: 0 0 10px;
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .schedule-artist {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin: 0 0 6px;
-    font-size: 13px;
-  }
-
-  .schedule-artist:last-child {
-    margin-bottom: 0;
-  }
-
-  .schedule-remove {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(210, 75, 88, 0.2);
-    color: var(--text);
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    font-size: 14px;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .schedule-remove:hover {
-    background: rgba(210, 75, 88, 0.35);
-  }
-
-  .empty {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 13px;
-  }
-
-  .site-footer {
-    padding: 24px 48px 40px;
-    color: var(--text-muted);
-    text-align: center;
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  #footer-message {
-    cursor: pointer;
-  }
-
-  .footer-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.2s ease;
-  }
-
-  .footer-link:hover {
-    color: var(--text);
-  }
-
-  .footer-link .icon {
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .footer-link .icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .easter-egg {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 40;
-    overflow: hidden;
-  }
-
-  .confetti-piece {
-    position: absolute;
-    top: -10vh;
-    left: var(--x);
-    width: 6px;
-    height: 12px;
-    background: var(--confetti-color);
-    opacity: 0.85;
-    border-radius: 2px;
-    transform: rotate(var(--rotate));
-    animation: confetti-fall var(--duration) linear var(--delay) infinite;
-  }
-
-  .easter-egg-bouncer {
-    position: absolute;
-    width: 144px;
-    height: 144px;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-  }
-
-  .easter-egg-bouncer.emoji {
-    background: rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 64px;
-  }
-
-  .fa-spotify {
-    color: white;
-  }
-
-  @keyframes confetti-fall {
-    0% {
-      transform: translateY(-10vh) rotate(0deg);
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-    }
-  }
-
-
-  .hidden {
-    display: none;
-  }
-
-  @media (max-width: 960px) {
-    .site-header {
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .main-nav {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    main {
-      grid-template-columns: 1fr;
-      padding: 20px 24px 60px;
-    }
-
-    .selection {
-      position: static;
-    }
-
-    .section-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .hero-card {
-      padding: 24px;
-    }
-
-    .site-header {
-      padding: 16px 20px;
-    }
-
-    .main-nav {
-      gap: 12px;
-    }
-
-    .main-nav a {
-      font-size: 10px;
-    }
-  }
-
-</style>
+              </div>
+            </section>
+          </>
+        );
+      })
+    )}
+
+    <aside class="selection"></aside>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-message">Just for fun, will delete later - Amir 🔥</p>
+    <a
+      class="footer-link"
+      href="https://github.com/amcodeam/tml-astro"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12 2C6.48 2 2 6.58 2 12.26c0 4.56 2.87 8.42 6.84 9.78.5.1.68-.23.68-.5 0-.24-.01-.9-.01-1.76-2.78.63-3.37-1.38-3.37-1.38-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.08 1.54 1.08.9 1.6 2.36 1.13 2.94.86.09-.66.35-1.13.64-1.39-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.03-2.78-.1-.26-.45-1.3.1-2.72 0 0 .85-.28 2.79 1.06.81-.23 1.67-.35 2.53-.35.86 0 1.72.12 2.53.35 1.94-1.34 2.79-1.06 2.79-1.06.55 1.42.2 2.46.1 2.72.64.73 1.03 1.65 1.03 2.78 0 3.96-2.35 4.83-4.59 5.09.36.33.69.97.69 1.96 0 1.42-.01 2.56-.01 2.91 0 .27.18.6.69.5 3.97-1.36 6.84-5.22 6.84-9.78C22 6.58 17.52 2 12 2z"
+          />
+        </svg>
+      </span>
+      <span>Source code on GitHub</span>
+    </a>
+  </footer>
+
+  <script type="module" src={lineupScript}></script>
+</BaseLayout>

@@ -2,8 +2,18 @@ const convexUrl = document.body.dataset.convexUrl;
 const topOverall = "artistCounts:topArtistsOverall";
 const topByWeek = "artistCounts:topArtistsByWeek";
 const statsFlagKey = "stats_page";
-const status = document.querySelector("[data-status]");
 let convexClientPromise;
+let statsSubscribed = false;
+let activeInitId = null;
+
+let listNodes = {};
+let emptyNodes = {};
+let statsGrid = null;
+let status = null;
+let loading = null;
+let downState = null;
+let statsEnabled = false;
+let initTimeout = null;
 
 const getConvexClient = () => {
   if (!convexUrl) {
@@ -19,19 +29,6 @@ const getConvexClient = () => {
   }
   return convexClientPromise;
 };
-const listNodes = {
-  overall: document.querySelector('[data-list="overall"]'),
-  week1: document.querySelector('[data-list="week1"]'),
-  week2: document.querySelector('[data-list="week2"]'),
-};
-const emptyNodes = {
-  overall: document.querySelector('[data-empty="overall"]'),
-  week1: document.querySelector('[data-empty="week1"]'),
-  week2: document.querySelector('[data-empty="week2"]'),
-};
-const statsGrid = document.querySelector("[data-stats-grid]");
-let statsEnabled = false;
-let statsSubscribed = false;
 
 const renderList = (key, items) => {
   const list = listNodes[key];
@@ -41,6 +38,9 @@ const renderList = (key, items) => {
   }
 
   list.innerHTML = "";
+  if (loading) {
+    loading.classList.add("hidden");
+  }
   if (!items?.length) {
     empty.classList.remove("hidden");
     return;
@@ -96,54 +96,140 @@ const setStatsMode = (enabled) => {
   }
 };
 
+const setLoading = (isLoading) => {
+  if (loading) {
+    loading.classList.toggle("hidden", !isLoading);
+  }
+};
+
+const setDownState = (isDown, message) => {
+  if (downState) {
+    downState.classList.toggle("hidden", !isDown);
+  }
+  if (statsGrid) {
+    statsGrid.classList.toggle("hidden", isDown || !statsEnabled);
+  }
+  if (status && message) {
+    status.textContent = message;
+  }
+};
+
 const subscribeStats = (client) => {
   if (statsSubscribed) {
     return;
   }
   statsSubscribed = true;
   client.onUpdate(topOverall, {}, (items) => {
-    if (!statsEnabled) {
-      return;
-    }
     renderList("overall", items);
   });
 
   client.onUpdate(topByWeek, { week: "W1" }, (items) => {
-    if (!statsEnabled) {
-      return;
-    }
     renderList("week1", items);
   });
 
   client.onUpdate(topByWeek, { week: "W2" }, (items) => {
-    if (!statsEnabled) {
-      return;
-    }
     renderList("week2", items);
   });
 };
 
-if (!convexUrl) {
-  if (status) {
-    status.textContent =
-      "Convex is not configured yet. Add PUBLIC_CONVEX_URL to enable live stats.";
+const initStatsPage = () => {
+  if (!document.querySelector("[data-stats-grid]")) {
+    return;
   }
-} else {
+
+  const initId = Symbol("stats");
+  activeInitId = initId;
+
+  status = document.querySelector("[data-status]");
+  listNodes = {
+    overall: document.querySelector('[data-list="overall"]'),
+    week1: document.querySelector('[data-list="week1"]'),
+    week2: document.querySelector('[data-list="week2"]'),
+  };
+  emptyNodes = {
+    overall: document.querySelector('[data-empty="overall"]'),
+    week1: document.querySelector('[data-empty="week1"]'),
+    week2: document.querySelector('[data-empty="week2"]'),
+  };
+  loading = document.querySelector("[data-stats-loading]");
+  downState = document.querySelector("[data-stats-down]");
+  statsGrid = document.querySelector("[data-stats-grid]");
+
+  statsSubscribed = false;
+  statsEnabled = false;
+  if (initTimeout) {
+    clearTimeout(initTimeout);
+    initTimeout = null;
+  }
+  clearLists();
+  if (downState) {
+    downState.classList.add("hidden");
+  }
+  if (statsGrid) {
+    statsGrid.classList.add("hidden");
+  }
+  if (status) {
+    status.textContent = "Loading live stats...";
+  }
+  setLoading(true);
+
+  initTimeout = window.setTimeout(() => {
+    if (activeInitId !== initId) {
+      return;
+    }
+    setLoading(false);
+    setDownState(true, "Live stats are taking too long to respond. Try again soon.");
+  }, 8000);
+
+  if (!convexUrl) {
+    if (initTimeout) {
+      clearTimeout(initTimeout);
+      initTimeout = null;
+    }
+    setLoading(false);
+    setDownState(
+      true,
+      "Stats are unavailable right now. Live picks still work on the line-up page."
+    );
+    return;
+  }
+
   getConvexClient().then((client) => {
+    if (activeInitId !== initId) {
+      return;
+    }
     if (!client) {
-      if (status) {
-        status.textContent =
-          "Live stats are offline. Picks still work without the feed.";
+      if (initTimeout) {
+        clearTimeout(initTimeout);
+        initTimeout = null;
       }
+      setLoading(false);
+      setDownState(true, "Live stats are offline. Picks still work without the feed.");
       clearLists();
       return;
     }
 
     client.onUpdate("featureFlags:getFeatureFlag", { key: statsFlagKey }, (isOn) => {
+      if (activeInitId !== initId) {
+        return;
+      }
+      if (initTimeout) {
+        clearTimeout(initTimeout);
+        initTimeout = null;
+      }
+      setLoading(false);
       setStatsMode(isOn);
+      if (!isOn) {
+        setDownState(true, "Stats are down right now.");
+      } else {
+        setDownState(false);
+      }
       if (isOn) {
         subscribeStats(client);
       }
     });
   });
-}
+};
+
+document.addEventListener("astro:page-load", initStatsPage);
+initStatsPage();
