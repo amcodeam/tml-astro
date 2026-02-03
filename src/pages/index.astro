@@ -8,6 +8,7 @@ import lineupScript from "../scripts/lineup.js?url";
 
 const buildWeekend = (data, name) => {
   const byDate = new Map();
+  const spotifyLinks = new Map();
 
   data.performances.forEach((performance) => {
     const dateKey = performance.date;
@@ -44,6 +45,28 @@ const buildWeekend = (data, name) => {
   };
 };
 
+const buildSpotify = (data) => {
+  const spotifyLinks = new Map();
+
+  data.performances.forEach((performance) => {
+    if (performance.name.includes("b2b")) {
+      const artistsB2B = performance.name.split("b2b").map(i => i.trim());
+      if (!spotifyLinks.has(artistsB2B[0]) && performance.artists[0].spotify) {
+        spotifyLinks.set(artistsB2B[0], performance.artists[0].spotify);
+      }
+      if (!spotifyLinks.has(artistsB2B[1]) && performance.artists[1] && performance.artists[1].spotify) {
+        spotifyLinks.set(artistsB2B[1], performance.artists[1].spotify);
+      }
+    } else {
+      if (!spotifyLinks.has(performance.name) && performance.artists[0].spotify) {
+        spotifyLinks.set(performance.name, performance.artists[0].spotify);
+      }
+    }
+  });
+
+  return spotifyLinks;
+};
+
 const weekends = [buildWeekend(weekend1, "W1"), buildWeekend(weekend2, "W2")];
 const defaultWeek = weekends[0];
 const defaultDay = defaultWeek.days[0];
@@ -60,6 +83,7 @@ const bodyAttrs = {
   "data-easter-egg-emoji": "🔥",
   "data-convex-url": import.meta.env.PUBLIC_CONVEX_URL,
 };
+const spotifyLinks = new Map([...buildSpotify(weekend1), ...buildSpotify(weekend2)]);
 ---
 
 <BaseLayout title="Tomorrowland Line-Up Selector" bodyAttrs={bodyAttrs}>
@@ -69,6 +93,7 @@ const bodyAttrs = {
       src="https://um.ameercode.com/script.js"
       data-website-id="50443578-0bed-4f3b-ad32-5daf2ec622a5"
     ></script>
+    <script src="https://kit.fontawesome.com/baf08c1187.js" crossorigin="anonymous"></script>
     <style is:global>
       main {
         display: grid;
@@ -317,6 +342,8 @@ const bodyAttrs = {
         color: var(--text);
         cursor: pointer;
         transition: all 0.2s ease;
+        display: flex;
+        justify-content: space-between;
       }
 
       .artist:hover {
@@ -445,6 +472,15 @@ const bodyAttrs = {
         align-items: center;
         justify-content: center;
         font-size: 64px;
+      }
+
+      .spotify-icons {
+        display: flex;
+        gap: 6px;
+      }
+
+      .fa-spotify {
+        color: white;
       }
 
       @keyframes confetti-fall {
@@ -578,24 +614,36 @@ const bodyAttrs = {
                     <article class="stage-card" data-stage={stage.name}>
                       <header>{stage.name}</header>
                       <div class="stage-body">
-                        {stage.artists.map((artist) => (
-                          <button
-                            class="artist"
-                            type="button"
-                            data-artist={artist}
-                            data-stage={stage.name}
-                            data-week={festivalWeek.name}
-                            data-day={festivalDay.date}
-                            data-day-name={festivalDay.day}
-                            data-disabled={
-                              artist.toLowerCase() === "to be announced"
-                                ? "true"
-                                : undefined
-                            }
-                          >
-                            {artist}
-                          </button>
-                        ))}
+                        {stage.artists.map((artist) => {
+                          const individualArtists = artist.includes(" b2b ") ? artist.split(/ b2b /i) : [artist];
+
+                          return (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              <span>{artist}</span>
+                              <span class="spotify-icons">
+                                {individualArtists.map((name) => {
+                                  const link = spotifyLinks.get(name.trim());
+                                  return link ? (
+                                      <a href={link} target="_blank"><i class="fa-brands fa-spotify fa-lg"></i></a>
+                                  ) : null;
+                                })}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </article>
                   ))}
@@ -606,24 +654,36 @@ const bodyAttrs = {
                     <article class="stage-card" data-stage={stage.name}>
                       <header>{stage.name}</header>
                       <div class="stage-body">
-                        {stage.artists.map((artist) => (
-                          <button
-                            class="artist"
-                            type="button"
-                            data-artist={artist}
-                            data-stage={stage.name}
-                            data-week={festivalWeek.name}
-                            data-day={festivalDay.date}
-                            data-day-name={festivalDay.day}
-                            data-disabled={
-                              artist.toLowerCase() === "to be announced"
-                                ? "true"
-                                : undefined
-                            }
-                          >
-                            {artist}
-                          </button>
-                        ))}
+                        {stage.artists.map((artist) => {
+                          const individualArtists = artist.includes(" b2b ") ? artist.split(/ b2b /i) : [artist];
+
+                          return (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              <span>{artist}</span>
+                              <span class="spotify-icons">
+                                {individualArtists.map((name) => {
+                                  const link = spotifyLinks.get(name.trim());
+                                  return link ? (
+                                      <a href={link} target="_blank"><i class="fa-brands fa-spotify fa-lg"></i></a>
+                                  ) : null;
+                                })}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </article>
                   ))}
