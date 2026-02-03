@@ -474,6 +474,11 @@ const spotifyLinks = new Map([...buildSpotify(weekend1), ...buildSpotify(weekend
         font-size: 64px;
       }
 
+      .spotify-icons {
+        display: flex;
+        gap: 6px;
+      }
+
       .fa-spotify {
         color: white;
       }
@@ -609,27 +614,36 @@ const spotifyLinks = new Map([...buildSpotify(weekend1), ...buildSpotify(weekend
                     <article class="stage-card" data-stage={stage.name}>
                       <header>{stage.name}</header>
                       <div class="stage-body">
-                        {stage.artists.map((artist) => (
-                          <button
-                            class="artist"
-                            type="button"
-                            data-artist={artist}
-                            data-stage={stage.name}
-                            data-week={festivalWeek.name}
-                            data-day={festivalDay.date}
-                            data-day-name={festivalDay.day}
-                            data-disabled={
-                              artist.toLowerCase() === "to be announced"
-                                ? "true"
-                                : undefined
-                            }
-                          >
-                            <span>{artist}</span>
-                            {spotifyLinks.get(artist) && (
-                              <span><a href={spotifyLinks.get(artist)}><i class="fa-brands fa-spotify fa-lg"></i></a></span>
-                            )}
-                          </button>
-                        ))}
+                        {stage.artists.map((artist) => {
+                          const individualArtists = artist.includes(" b2b ") ? artist.split(/ b2b /i) : [artist];
+
+                          return (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              <span>{artist}</span>
+                              <span class="spotify-icons">
+                                {individualArtists.map((name) => {
+                                  const link = spotifyLinks.get(name.trim());
+                                  return link ? (
+                                      <a href={link} target="_blank"><i class="fa-brands fa-spotify fa-lg"></i></a>
+                                  ) : null;
+                                })}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </article>
                   ))}
@@ -640,27 +654,36 @@ const spotifyLinks = new Map([...buildSpotify(weekend1), ...buildSpotify(weekend
                     <article class="stage-card" data-stage={stage.name}>
                       <header>{stage.name}</header>
                       <div class="stage-body">
-                        {stage.artists.map((artist) => (
-                          <button
-                            class="artist"
-                            type="button"
-                            data-artist={artist}
-                            data-stage={stage.name}
-                            data-week={festivalWeek.name}
-                            data-day={festivalDay.date}
-                            data-day-name={festivalDay.day}
-                            data-disabled={
-                              artist.toLowerCase() === "to be announced"
-                                ? "true"
-                                : undefined
-                            }
-                          >
-                            <span>{artist}</span>
-                            {spotifyLinks.get(artist) && (
-                              <span><a href={spotifyLinks.get(artist)}><i class="fa-brands fa-spotify fa-lg"></i></a></span>
-                            )}
-                          </button>
-                        ))}
+                        {stage.artists.map((artist) => {
+                          const individualArtists = artist.includes(" b2b ") ? artist.split(/ b2b /i) : [artist];
+
+                          return (
+                            <button
+                              class="artist"
+                              type="button"
+                              data-artist={artist}
+                              data-stage={stage.name}
+                              data-week={festivalWeek.name}
+                              data-day={festivalDay.date}
+                              data-day-name={festivalDay.day}
+                              data-disabled={
+                                artist.toLowerCase() === "to be announced"
+                                  ? "true"
+                                  : undefined
+                              }
+                            >
+                              <span>{artist}</span>
+                              <span class="spotify-icons">
+                                {individualArtists.map((name) => {
+                                  const link = spotifyLinks.get(name.trim());
+                                  return link ? (
+                                      <a href={link} target="_blank"><i class="fa-brands fa-spotify fa-lg"></i></a>
+                                  ) : null;
+                                })}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </article>
                   ))}
